@@ -10,9 +10,9 @@ import {HomePageComponent} from './modules/cuipasa/pages/home/home-page.componen
 
 
 const appRoutes: Routes = [
-  { path: '',   redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomePageComponent},
-  { path: 'contact', component: ContactPageComponent}
+  {path: '', component: HomePageComponent},
+  {path: 'home', component: HomePageComponent},
+  {path: 'contact', component: ContactPageComponent}
 ];
 
 @NgModule({
@@ -24,4 +24,5 @@ const appRoutes: Routes = [
     RouterModule
   ]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
