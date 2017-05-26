@@ -7,6 +7,7 @@
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scrapers.iml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/common.py" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/requirements.txt" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/telekom/__init__.py" />
