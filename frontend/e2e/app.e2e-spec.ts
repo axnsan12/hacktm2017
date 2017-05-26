@@ -7,8 +7,8 @@ describe('hacktm2017-frontend App', () => {
     page = new Hacktm2017FrontendPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display message saying cuipasa works', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(page.getParagraphText()).toEqual('cuipasa works!');
   });
 });
