@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {StaticInfoService} from '../../services/static-info.service';
+import {Service} from '../../models/service';
 
 @Component({
   selector: 'app-magic',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MagicComponent implements OnInit {
 
-  constructor() { }
+  public services: Service[] = [];
+
+  constructor(private staticInfoService: StaticInfoService) {
+    this.staticInfoService.getServices().subscribe(services => {
+      this.gotServices(services);
+    });
+  }
 
   ngOnInit() {
+  }
+
+  private gotServices(services: Service[]) {
+    console.log(services);
+    this.services = services;
   }
 
 }
