@@ -71,7 +71,8 @@ $app->get('/get/service/characteristics', function (Request $request) use ($app)
     $sql = "SELECT 
                     `s`.`id`,
                     `s`.`name`
-                    FROM `services` `s`";
+                    FROM `services` `s`
+                    WHERE `s`.`id` = ?";
 
     $serviceId = $request->query->get('service_id');
     $data = $app['db']->fetchAll($sql, array($serviceId));
