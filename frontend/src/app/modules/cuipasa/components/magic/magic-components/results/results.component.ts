@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResultsComponent implements OnInit {
 
+  private aeea
   constructor() { }
 
   ngOnInit() {

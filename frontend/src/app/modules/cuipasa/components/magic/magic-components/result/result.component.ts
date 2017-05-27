@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Characteristic} from "../../../../models/characteristic";
+import {StaticInfoService} from "../../../../services/static-info.service";
 
 @Component({
   selector: 'app-result',
@@ -7,7 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResultComponent implements OnInit {
 
-  constructor() { }
+  private characteristics :Characteristic[] = [];
+
+  constructor(private staticInfoService: StaticInfoService) {
+
+    //am luat caracteristicile de la serviciul nr 1
+    this.staticInfoService.getServiceCharacteristics(1).subscribe(characteristics => {
+      this.characteristics = characteristics;
+    });
+
+
+  }
+
+
+
 
   ngOnInit() {
   }
