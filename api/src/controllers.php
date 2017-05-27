@@ -282,8 +282,8 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                                     ON `sc`.`id` = `pc`.`service_characteristics_id`
                                 WHERE `pc`.`packages_id` = ?";
 
-        $data = $app['db']->fetchAll($sql, array($package['id']));
-        $package['characteristics'] = count($data) ? $data : [];
+        $dataChar = $app['db']->fetchAll($sql, array($package['id']));
+        $package['characteristics'] = count($dataChar) ? $dataChar : [];
     }
 
     return $app->json($data);
