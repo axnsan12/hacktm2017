@@ -271,6 +271,7 @@ $app->get('/get/packages', function (Request $request) use ($app) {
     $data = $app['db']->fetchAll($sql, array($serviceId));
 
     $dataOutput = [];
+    $i = 0;
     foreach ($data as $package) {
         $sql = "        SELECT 
                                 `pc`.`packages_id`,
@@ -284,7 +285,7 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                                 WHERE `pc`.`packages_id` = ?";
         array_push($dataOutput,  $package);
         $dataChar = $app['db']->fetchAll($sql, array($package['id']));
-        $dataOutput['characteristics'] = count($dataChar) ? $dataChar : [];
+        $dataOutput[$i++]['characteristics'] = count($dataChar) ? $dataChar : [];
     }
 
     return $app->json($dataOutput);
