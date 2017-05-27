@@ -1,19 +1,19 @@
 <div class="container">
 
 </div>
-<div class="container">
+<div class="container services">
   <div class="row">
     <div class="col-12">
-      1. Alege tipul de serviciul dorit:
+      <p class="step">1. Alege tipul de serviciul dorit:</p>
     </div>
   </div>
   <app-service-selector (selectedServiceChanged)="selectedServiceChanged($event)"></app-service-selector>
 </div>
 
-<div class="container">
+<div class="container characteristics">
   <div class="row">
     <div class="col-12">
-      2. Filtrează după caracteristici
+      <p class="step">2. Filtrează după caracteristici</p>
     </div>
   </div>
   <app-characteristics [service]="service"></app-characteristics>

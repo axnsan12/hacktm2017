@@ -1,8 +1,13 @@
 <div class="row">
-  <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let service of services">
-    <button class="btn  waves-effect col-12"
-            [ngClass]="{'btn-outline-cuipasa': !isServiceSelected(service), 'btn-cuipasa': isServiceSelected(service)}"
-            (click)="serviceClicked(service);"
-    >{{service.name}}</button>
+  <div class="col-12 col-sm-4 col-md-3 col-lg-2 service" *ngFor="let service of services">
+    <!--<button class="btn  waves-effect col-12"-->
+    <!--[ngClass]="{'btn-outline-cuipasa': !isServiceSelected(service), 'btn-cuipasa': isServiceSelected(service)}"-->
+    <!--(click)="serviceClicked(service);">{{service.name}}</button>-->
+
+    <div class="icon-for-service col-10" [ngClass]="(isServiceSelected(service) ? 'active ': '') + 'icon-for-service-'+service.alias"
+         (click)="serviceClicked(service);">
+
+    </div>
+    {{service.name}}
   </div>
 </div>
