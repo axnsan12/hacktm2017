@@ -56,7 +56,7 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
             'max': characteristic.range[1]
           }
         };
-        console.log(sliderOptions);
+        // console.log(sliderOptions);
         noUiSlider.create(sliderElement, sliderOptions);
         sliderElement.noUiSlider.on('change', function () {
           const limits = sliderElement.noUiSlider.get();
