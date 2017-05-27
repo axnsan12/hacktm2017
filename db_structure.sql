@@ -222,6 +222,8 @@ USE `hacktm`;
 INSERT INTO `hacktm`.`services` (`id`, `name`, `alias`) VALUES (1, 'Telefonie mobilă', 'mobile');
 INSERT INTO `hacktm`.`services` (`id`, `name`, `alias`) VALUES (2, 'Televiziune', 'tv');
 INSERT INTO `hacktm`.`services` (`id`, `name`, `alias`) VALUES (3, 'Internet', 'internet');
+INSERT INTO `hacktm`.`services` (`id`, `name`, `alias`) VALUES (4, 'Energie', 'energy'); 
+INSERT INTO `hacktm`.`services` (`id`, `name`, `alias`) VALUES (5, 'Gaz', 'gas'); 
 
 COMMIT;
 

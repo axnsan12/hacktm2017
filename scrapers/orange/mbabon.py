@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-import json
-import sys
-from collections import OrderedDict
+import os, sys, inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir)
 
+import json
+from collections import OrderedDict
 from common import scraper_main, get_soup, format_units, extract_features
 
 
