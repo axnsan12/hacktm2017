@@ -105,8 +105,8 @@ class Scrapers
     /**
      * @return mixed
      */
-    public function getCompanyServices() {
-        return $this->companyServices;
+    public function getCompanyService() {
+        return $this->companyService;
     }
 
     /**
@@ -163,8 +163,8 @@ class Scrapers
     /**
      * @var \Models\CompanyService
      *
-     * @ORM\OneToMany(targetEntity="Models\CompanyService", mappedBy="scrapers")
+     * @ORM\OneToOne(targetEntity="Models\CompanyService", mappedBy="scraper")
      */
-    private $companyServices;
+    private $companyService;
 
 }

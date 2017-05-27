@@ -53,8 +53,6 @@ class Packages
     private $bundles;
 
 
-
-
     /**
      * @var \Models\CompanyService
      *
@@ -65,5 +63,80 @@ class Packages
      */
     private $companyService;
 
+    /**
+     * Packages constructor.
+     * @param string $name
+     * @param string $price
+     * @param \Models\CompanyService $companyService
+     * @param string $scraperIdHint
+     */
+    public function __construct($name, $price, $companyService, $scraperIdHint = null) {
+        $this->name = $name;
+        $this->price = $price;
+        $this->companyService = $companyService;
+        $this->scraperIdHint = $scraperIdHint;
+    }
 
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name) {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrice() {
+        return $this->price;
+    }
+
+    /**
+     * @param string $price
+     */
+    public function setPrice($price) {
+        $this->price = $price;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScraperIdHint() {
+        return $this->scraperIdHint;
+    }
+
+    /**
+     * @param string $scraperIdHint
+     */
+    public function setScraperIdHint($scraperIdHint) {
+        $this->scraperIdHint = $scraperIdHint;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * @return Bundles
+     */
+    public function getBundles() {
+        return $this->bundles;
+    }
+
+    /**
+     * @return CompanyService
+     */
+    public function getCompanyService() {
+        return $this->companyService;
+    }
 }

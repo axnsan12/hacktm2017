@@ -17,8 +17,6 @@ try {
     $scriptName = "script_file";
     $inputFileExists = true;
 
-    $plm = new \Models\Packages();
-
     if (!isset($argv[1]) || !isset($argv[2])) {
         throw new Exception("Invalid arguments");
     }
@@ -48,18 +46,12 @@ try {
                 $scriptName = $scraper->getScriptName();
 
                 /** @var Models\CompanyService[] $companyServices */
-                $companyServices = $scraper->getCompanyServices();
+                $companyService = $scraper->getCompanyService();
 
-                $packages = [];
-                foreach ($companyServices as $cs) {
-                    echo count($cs->getPackages());
-                    die();
-                    echo $cs->getPackages() . PHP_EOL;
-                    array_push($packages, $cs->getPackage());
-                }
+                $newPackage = new Packages($value['name'], $value['price'], $companyService,null);
 
-                var_dump($packages);
-                die();
+                $em->persist($newPackage);
+                $em->flush();
 
                 if (!file_exists($scriptName)) {
                     throw new Exception("script_file not found");
@@ -79,17 +71,7 @@ try {
                     throw new Exception("Execution failed");
                 }
             }
-
-            if ($DB->query("INSERT INTO `packages` (`name`, `price`) 
-                                            VALUES ('{$inputData['packages']['name']}', {$inputData['packages']['price']})")
-            ) {
-
-            } else {
-                $DB->rollback();
-                throw new Exception("Insert error");
-            }
         }
-        $DB->commit();
     } else {
 
     }

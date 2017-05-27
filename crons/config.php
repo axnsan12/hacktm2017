@@ -25,7 +25,7 @@ $conn = array(
 $paths            = array(__DIR__ . '/Models');
 
 $config = Setup::createConfiguration($isDevMode);
-// $config->setSQLLogger(new EchoSQLLogger());
+$config->setSQLLogger(new EchoSQLLogger());
 $driver = new AnnotationDriver(new AnnotationReader(), $paths);
 
 // registering noop annotation autoloader - allow all annotations by default

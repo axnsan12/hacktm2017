@@ -34,12 +34,12 @@ class CompanyService
     /**
      * @var \Models\Scrapers
      *
-     * @ORM\ManyToOne(targetEntity="Models\Scrapers")
+     * @ORM\OneToOne(targetEntity="Models\Scrapers", inversedBy="companyService")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="scrapers_id", referencedColumnName="id")
      * })
      */
-    private $scrapers;
+    private $scraper;
 
     /**
      * @var \Models\Services
@@ -68,8 +68,8 @@ class CompanyService
     /**
      * @return Scrapers
      */
-    public function getScrapers() {
-        return $this->scrapers;
+    public function getScraper() {
+        return $this->scraper;
     }
 
     /**
