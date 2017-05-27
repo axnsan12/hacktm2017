@@ -260,14 +260,21 @@ $app->get('/get/companies', function (Request $request) use ($app) {
 $app->get('/get/packages', function (Request $request) use ($app) {
     $sql = "SELECT 
                     `p`.*,
-                    `pc`.*
+                    (
+                        SELECT 
+                                `pc`.`value`,
+                                `sc`.`name`,
+                                `sc`.`type`,
+                                `sc`.`alias`
+                                FROM `package_characteristics` `pc`
+                                LEFT JOIN `service_characteristics` `sc`
+                                    ON `sc`.`id` = `pc`.`service_characteristics_id`
+                    ) AS `package_characteristics` 
                     FROM `services` `s`
                     JOIN `company_service` `cs`
                         ON `cs`.`services_id` = ?
                     JOIN `packages` `p`
-                        ON `p`.`company_service_id` = `cs`.`id`
-                    LEFT JOIN `package_characteristics` `pc`
-                        ON pc.packages_id = `p`.`id`";
+                        ON `p`.`company_service_id` = `cs`.`id`";
 
     $serviceId = $request->query->get('service_id');
     $data = $app['db']->fetchAll($sql, array($serviceId));
