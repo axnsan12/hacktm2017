@@ -59,7 +59,7 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                                 LEFT JOIN `service_characteristics` `sc`
                                     ON `sc`.`id` = `pc`.`service_characteristics_id`
                                 WHERE `pc`.`packages_id` = ?";
-        array_push($dataOutput,  $package);
+        array_push($dataOutput, $package);
         $dataChar = $app['db']->fetchAll($sql, array($package['id']));
         $dataOutput[$i++]['characteristics'] = count($dataChar) ? $dataChar : [];
     }
@@ -88,13 +88,32 @@ $app->get('/get/service/characteristics', function (Request $request) use ($app)
                                 FROM `service_characteristics` `sc`
                                     WHERE `sc`.`services_id` = ?";
 
-        array_push($dataOutput,  $service);
+        array_push($dataOutput, $service);
         $dataChar = $app['db']->fetchAll($sql, array($service['id']));
         $dataOutput[$i++]['characteristics'] = count($dataChar) ? $dataChar : [];
     }
 
     return $app->json($dataOutput);
 })->bind('getServiceCharacteristics');
+
+$app->get('/get/min-max', function (Request $request) use ($app) {
+    $sql = "SELECT
+                  `sc`.`id` AS `sc_id`,
+                  `pc`.`id` AS `pc_id`,
+                  MIN(`pc`.`value`) AS `minValue`,
+                  MAX(`pc`.`value`) AS `maxValue`
+                  FROM `service_characteristics` `sc`
+                  JOIN `package_characteristics` `pc`
+                    ON `pc`.`service_characteristics_id` = `sc`.`id`
+                  WHERE `sc`.`services_id` = ?
+                  GROUP BY `pc`.`service_characteristics_id`
+                  ";
+
+    $serviceId = $request->query->get('service_id');
+    $data = $app['db']->fetchAll($sql, array($serviceId));
+
+    return $app->json($data);
+})->bind('getMinMax');
 
 $app->after(function (Request $request, Response $response) {
     $response->headers->set('Access-Control-Allow-Origin', '*');
