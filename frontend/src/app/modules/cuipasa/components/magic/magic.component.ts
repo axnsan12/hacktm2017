@@ -16,9 +16,9 @@ export class MagicComponent implements OnInit {
   }
 
   public selectedServiceChanged(service) {
-    this.staticInfoService.getServiceCharacteristics(service.id).subscribe(data => {
-      console.log(data);
-    });
+    // this.staticInfoService.getServiceCharacteristics(service.id).subscribe(data => {
+    //   console.log(data);
+    // });
     // console.log(service);
   }
 }
