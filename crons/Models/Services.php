@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Services
  * @ORM\Table(name="services")
+ * @ORM\Table(name="service_characteristics", uniqueConstraints={@ORM\UniqueConstraint(name="alias_UNIQUE", columns={"alias"})})})
  * @ORM\Entity
  */
 class Services {
@@ -29,6 +30,12 @@ class Services {
      * @ORM\OneToMany(targetEntity="Models\ServiceCharacteristics", mappedBy="service")
      */
     private $characteristics;
+
+    /**
+     * @var string
+     * @ORM\Column(name="alias", type="string", length=45, nullable=false)
+     */
+    private $alias;
 
     /**
      * Services constructor.
@@ -87,6 +94,13 @@ class Services {
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlias() {
+        return $this->alias;
     }
 
 }
