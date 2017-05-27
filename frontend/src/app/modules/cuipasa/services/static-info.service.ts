@@ -25,7 +25,10 @@ export class StaticInfoService {
   }
 
   public getServiceCharacteristics(serviceId: number): Observable<Characteristic[]> {
-    return this.mockStaticService.getServiceCharacteristics(serviceId);
+    // http://api.hacktm.tdrs.me/get/service/characteristics?service_id=1
+    const uri = `${this.backendUri}/get/service/characteristics?service_id=${serviceId}`;
+    return this.http.get(uri).map(resp => resp.json()[0].characteristics);
+    // return this.mockStaticService.getServiceCharacteristics(serviceId);
   }
 
 }

@@ -16,7 +16,7 @@
 
         {{characteristic.name}}<span *ngIf="characteristic.values && characteristic.values.length == 2">: de la {{characteristic.values[0]}} la {{characteristic.values[1]}} {{characteristic.mu}} </span>
 
-        <div class="slider" [ngClass]="'slider-'+characteristic.id"></div>
+        <div class="slider" [ngClass]="'slider-'+characteristic.alias"></div>
 
       </div>
     </div>

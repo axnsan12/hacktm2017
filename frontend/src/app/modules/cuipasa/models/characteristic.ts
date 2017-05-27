@@ -5,4 +5,5 @@ export interface Characteristic {
   selected?: boolean;
   range?: any[];
   mu: string;
+  values?: number[];
 }

@@ -16,4 +16,8 @@ export class MainMenuComponent implements OnInit {
   public authButtonClicked() {
     console.log(123);
   }
+
+  public hideChildModal() {
+
+  }
 }

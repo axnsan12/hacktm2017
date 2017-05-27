@@ -16,5 +16,5 @@
       <p class="step">2. Filtrează după caracteristici</p>
     </div>
   </div>
-  <app-characteristics [service]="service"></app-characteristics>
+  <app-characteristics [service]="service" (done)="filtersUpdated($event)"></app-characteristics>
 </div>

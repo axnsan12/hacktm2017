@@ -1,8 +1,9 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Service} from '../../../../models/service';
 import {Characteristic} from '../../../../models/characteristic';
 import {StaticInfoService} from '../../../../services/static-info.service';
 import 'rxjs/add/operator/toPromise';
+import {Filter} from "../../../../models/filter";
 
 declare var noUiSlider: any;
 
@@ -16,6 +17,9 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
   @Input()
   public service: Service;
 
+  @Output()
+  public done: EventEmitter<Filter[]> = new EventEmitter();
+
   public characteristics: Characteristic[];
 
   public someRange = 2;
@@ -28,32 +32,35 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     // console.log(this.service);
-    if (this.service === null) {
+    if (!this.service) {
       this.characteristics = [];
       return;
     }
     const subscription = this.staticInfoService.getServiceCharacteristics(this.service.id)
       .subscribe(characteristics => {
-        console.log(characteristics);
+        // console.log(characteristics);
         this.characteristics = characteristics;
         subscription.unsubscribe();
       });
   }
 
-  public toggleCharacteristic(characteristic): void {
+  public toggleCharacteristic(characteristic: Characteristic): void {
     characteristic.selected = !characteristic.selected;
     if (characteristic.selected) {
       setTimeout(() => {
-        const className = 'slider-' + characteristic.id;
+        const className = 'slider-' + characteristic.alias;
+
+        // console.log(className);
+
         const sliderElement: any = document.getElementsByClassName(className)[0];
 
         const sliderOptions = {
-          start: characteristic.range,
+          start: characteristic.range || [0, 1000],
           connect: true,
           step: 10,
           range: {
-            'min': characteristic.range[0],
-            'max': characteristic.range[1]
+            'min': characteristic.range ? characteristic.range[0] : 0,
+            'max': characteristic.range ? characteristic.range[1] : 1000
           }
         };
         // console.log(sliderOptions);
@@ -66,12 +73,23 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
           ];
           this.filtersUpdated();
         });
-      }, 50);
+        this.filtersUpdated();
+      }, 250);
+    } else {
+      this.filtersUpdated();
     }
   }
 
   public filtersUpdated(): void {
     console.log('filtersUpdated');
+    const filters: Filter[] = [];
+    this.characteristics.forEach(characteristic => {
+      if (!characteristic.selected) {
+        return;
+      }
+      filters.push({characteristic: characteristic, limits: characteristic.values});
+    });
+    this.done.next(filters);
   }
 
 }

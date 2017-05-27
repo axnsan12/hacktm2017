@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {StaticInfoService} from '../../services/static-info.service';
 import {Service} from '../../models/service';
+import {Filter} from "../../models/filter";
 
 @Component({
   selector: 'app-magic',
@@ -10,6 +11,10 @@ import {Service} from '../../models/service';
 export class MagicComponent implements OnInit {
 
   public service: Service = null;
+  public filters: Filter[] = [];
+
+  @Output()
+  public done: EventEmitter<any> = new EventEmitter();
 
   constructor(private staticInfoService: StaticInfoService) {
   }
@@ -22,5 +27,15 @@ export class MagicComponent implements OnInit {
     //   console.log(data);
     // });
     this.service = service;
+    this.triggerDoneEvent();
+  }
+
+  public filtersUpdated($event) {
+    this.filters = $event;
+    this.triggerDoneEvent();
+  }
+
+  public triggerDoneEvent() {
+    this.done.next({service: this.service, filters: this.filters});
   }
 }

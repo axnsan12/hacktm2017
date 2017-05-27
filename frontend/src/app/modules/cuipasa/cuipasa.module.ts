@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HomePageComponent} from './pages/home-page/home-page.component';
 import {ContactPageComponent} from './pages/contact-page/contact-page.component';
-import {ApiService} from './services/api.service';
 
 import {HeaderComponent} from './components/header/header.component';
 
@@ -13,6 +12,7 @@ import {ServiceSelectorComponent} from './components/magic/magic-components/serv
 import {CharacteristicsComponent} from './components/magic/magic-components/characteristics/characteristics.component';
 import {ResultsComponent} from './components/magic/magic-components/results/results.component';
 import {ResultComponent} from './components/magic/magic-components/result/result.component';
+import {DataService} from './services/data.service';
 
 
 @NgModule({
@@ -31,9 +31,9 @@ import {ResultComponent} from './components/magic/magic-components/result/result
   ],
   exports: [HomePageComponent],
   providers: [
-    ApiService,
     StaticInfoService,
-    MockStaticInfoService
+    MockStaticInfoService,
+    DataService
   ]
 })
 export class CuipasaModule {
