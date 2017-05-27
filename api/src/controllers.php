@@ -258,9 +258,16 @@ $app->get('/get/companies', function (Request $request) use ($app) {
 })->bind('getCompanies');
 
 $app->get('/get/packages', function (Request $request) use ($app) {
-    $sql = "SELECT * FROM `packages`";
+    $sql = "SELECT 
+                    * 
+                    FROM `services` `s`
+                    JOIN `company_service` `cs`
+                        ON `cs`.`services_id` = ?
+                    JOIN `packages` `p`
+                        ON `p`.`company_service_id` = `cs`.`id`";
 
-    $data = $app['db']->fetchAll($sql);
+    $serviceId = $request->query->get('service_id');
+    $data = $app['db']->fetchAll($sql, array($serviceId));
 
     return $app->json($data);
 })->bind('getPackages');
