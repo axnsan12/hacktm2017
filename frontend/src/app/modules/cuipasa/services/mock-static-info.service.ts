@@ -10,23 +10,28 @@ export class MockStaticInfoService {
   private mockServices: Service[] = [
     {
       id: 1,
-      name: 'Telefonie și internet mobil'
+      name: 'Telefonie și internet mobil',
+      alias:'mobile'
     },
     {
       id: 2,
-      name: 'Televiziune'
+      name: 'Televiziune',
+      alias: 'tv'
     },
     {
       id: 3,
-      name: 'Internet fix'
+      name: 'Internet fix',
+      alias:'net'
     },
     {
       id: 4,
-      name: 'Energie'
+      name: 'Energie',
+      alias: 'energy'
     },
     {
       id: 5,
-      name: 'Gaz'
+      name: 'Gaz',
+      alias: 'gas'
     }
   ];
 

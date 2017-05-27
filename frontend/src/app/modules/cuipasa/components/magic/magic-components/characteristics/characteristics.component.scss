@@ -1,3 +1,23 @@
+@import "../../../../../../../styles";
+
 .slider {
   margin: 15px;
+}
+
+.characteristics-box {
+
+}
+
+.characteristics {
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content:space-between;
+}
+
+.values {
+  background-color:$cuipasa-grey;
+  padding:20px;
+  margin-top:20px;
+  margin-bottom:20px;
 }
