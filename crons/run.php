@@ -3,12 +3,15 @@
  * @author: Robert Mihai Colca
  * @since : 5/27/17 12:34 AM
  */
-$mysqlData = [
-    'host'     => '127.0.0.1',
-    'username' => 'robery',
-    'password' => 'parola',
-    'database' => 'hacktm',
-];
+// bootstrap.php
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\EntityManager;
+use \Models\Packages;
+use \Models\Scrapers;
+
+require_once "../phpapp/vendor/autoload.php";
+require_once "config.php";
+require_once 'autoload.php';
 
 try {
     $scriptName = "script_file";
@@ -16,12 +19,6 @@ try {
 
     if (!isset($argv[1]) || !isset($argv[2])) {
         throw new Exception("Invalid arguments");
-    }
-
-    $DB = new MySQLi($mysqlData['host'], $mysqlData['username'], $mysqlData['password'], $mysqlData['database']);
-
-    if ($DB->connect_errno) {
-        throw new Exception("Connection error");
     }
 
     // If no input file exists
@@ -35,26 +32,27 @@ try {
             throw new Exception("Invalid json");
         }
 
-
-        $DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+        // $DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
         foreach ($inputData['packages'] as $value) {
-            if (!isset($inputData['packages']['name']) || !isset($inputData['packages']['price'])) {
+            if (!isset($value['name']) || !isset($value['price'])) {
                 echo "[SKIPPED] No name or price defined for this package" . PHP_EOL;
                 continue;
             }
 
-            $scraperResult = $DB->query("SELECT 
-                                                    *
-                                                    FROM `scrapers` 
-                                                WHERE `enabled` = 'true'");
+            $scrapersRepo = $em->getRepository("Models\Scrapers");
+            $scrapers = $scrapersRepo->findAll();  /** @var Scrapers[] $scrapers */
 
-            if (!$scraperResult) {
-                throw new Exception("Scraper result error");
-            }
+            foreach ($scrapers as $scraper) {
+                $scriptName = $scraper->getScriptName();
 
-            $scraperData = $scraperResult->fetch_all(MYSQLI_ASSOC);
+                /** @var Models\CompanyService[] $companyServices */
+                $companyService = $scraper->getCompanyService();
 
-            foreach ($scraperData as $data) {
+                $newPackage = new Packages($value['name'], $value['price'], $companyService,null);
+
+                $em->persist($newPackage);
+                $em->flush();
+
                 if (!file_exists($scriptName)) {
                     throw new Exception("script_file not found");
                 }
@@ -73,17 +71,7 @@ try {
                     throw new Exception("Execution failed");
                 }
             }
-
-            if ($DB->query("INSERT INTO `packages` (`name`, `price`) 
-                                            VALUES ('{$inputData['packages']['name']}', {$inputData['packages']['price']})")
-            ) {
-
-            } else {
-                $DB->rollback();
-                throw new Exception("Insert error");
-            }
         }
-        $DB->commit();
     } else {
 
     }
@@ -106,6 +94,6 @@ try {
     } else if ($error == "Scraper result error") {
         echo "[FATAL ERROR] No Scrapers can be fetched !" . PHP_EOL;
     } else {
-        echo "[FATAL ERROR] An unknown error has been encountered !" . PHP_EOL;
+        echo "[FATAL ERROR] An unknown error has been encountered ! Detail: {$error}" . PHP_EOL;
     }
 }
