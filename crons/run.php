@@ -5,9 +5,9 @@
  */
 $mysqlData = [
     'host' => 'localhost',
-    'username' => 'root',
-    'password' => '',
-    'database' => 'mydb'
+    'username' => 'robery',
+    'password' => 'parola',
+    'database' => 'hacktm'
 ];
 
 try {
@@ -53,6 +53,11 @@ try {
             throw new Exception("Invalid json");
         }
 
+        foreach ($inputData['packages'] as $value) {
+            if ($DB->query("INSERT INTO `packages` (`name`, `price`) VALUES ('a', 'b')")) {
+
+            }
+        }
     } else {
 
     }
