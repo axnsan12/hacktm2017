@@ -270,6 +270,7 @@ $app->get('/get/packages', function (Request $request) use ($app) {
     $serviceId = $request->query->get('service_id');
     $data = $app['db']->fetchAll($sql, array($serviceId));
 
+    $dataOutput = [];
     foreach ($data as $package) {
         $sql = "        SELECT 
                                 `pc`.`packages_id`,
@@ -281,12 +282,12 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                                 LEFT JOIN `service_characteristics` `sc`
                                     ON `sc`.`id` = `pc`.`service_characteristics_id`
                                 WHERE `pc`.`packages_id` = ?";
-
+        array_push($dataOutput,  $package);
         $dataChar = $app['db']->fetchAll($sql, array($package['id']));
-        $package['characteristics'][] = count($dataChar) ? $dataChar : [];
+        $dataOutput['characteristics'] = count($dataChar) ? $dataChar : [];
     }
 
-    return $app->json($data);
+    return $app->json($dataOutput);
 })->bind('getPackages');
 
 $app->after(function (Request $request, Response $response) {
