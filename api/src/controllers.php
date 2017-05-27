@@ -10,12 +10,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 $app->get('/', function () use ($app) {
     $data = [
-        "message" => "welcome"
+        "message" => "welcome",
     ];
 
     return $app->json($data);
-})
-    ->bind('homepage');
+})->bind('homepage');
 
 $app->get('/get/specializations', function () use ($app) {
     $sql = "SELECT * FROM `specializations` ORDER BY `name` ASC";
@@ -259,14 +258,7 @@ $app->get('/get/companies', function (Request $request) use ($app) {
 
 $app->get('/get/packages', function (Request $request) use ($app) {
     $sql = "SELECT 
-                    `p`.*,
-                    (
-                        SELECT
-                                `sc`.`name`
-                                FROM `package_characteristics` `pc`
-                                LEFT JOIN `service_characteristics` `sc`
-                                    ON `sc`.`id` = `pc`.`service_characteristics_id`
-                    ) AS `package_value` 
+                    `p`.*
                     FROM `services` `s`
                     JOIN `company_service` `cs`
                         ON `cs`.`services_id` = ?
@@ -275,6 +267,20 @@ $app->get('/get/packages', function (Request $request) use ($app) {
 
     $serviceId = $request->query->get('service_id');
     $data = $app['db']->fetchAll($sql, array($serviceId));
+
+    foreach ($data as $package) {
+        $sql = "        SELECT 
+                                `pc`.`value`,
+                                `sc`.`name`,
+                                `sc`.`type`,
+                                `sc`.`alias`
+                                FROM `package_characteristics` `pc`
+                                LEFT JOIN `service_characteristics` `sc`
+                                    ON `sc`.`id` = `pc`.`service_characteristics_id`
+                                WHERE `pc`.`packages_id` = ?";
+
+            $package['characteristics'] = $app['db']->fetchAll($sql, array($package['id']));
+    }
 
     return $app->json($data);
 })->bind('getPackages');
