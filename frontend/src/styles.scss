@@ -14,3 +14,16 @@ $cuipasa-blue: #4C5A82;
   background: transparent;
   color: $cuipasa-blue !important;
 }
+
+.cuipasa-checkbox {
+  padding: 5px 10px;
+  cursor: pointer;
+  user-select: none;
+  .fa {
+    //margin-top: 3px;
+  }
+}
+
+.fa-square-o {
+  padding-right: 2.5px;
+}

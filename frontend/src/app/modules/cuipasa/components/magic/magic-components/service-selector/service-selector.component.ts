@@ -21,6 +21,9 @@ export class ServiceSelectorComponent implements OnInit {
   }
 
   ngOnInit() {
+    setTimeout(() => {
+      this.serviceClicked(this.services[0]);
+    }, 500);
   }
 
   private gotServices(services: Service[]) {

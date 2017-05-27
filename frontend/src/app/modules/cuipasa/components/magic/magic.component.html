@@ -9,3 +9,12 @@
   </div>
   <app-service-selector (selectedServiceChanged)="selectedServiceChanged($event)"></app-service-selector>
 </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      2. Caracteristicile serviciului ales
+    </div>
+  </div>
+  <app-characteristics [service]="service"></app-characteristics>
+</div>
