@@ -68,12 +68,31 @@ $app->get('/get/packages', function (Request $request) use ($app) {
 })->bind('getPackages');
 
 $app->get('/get/service/characteristics', function (Request $request) use ($app) {
-    $sql = "SELECT * FROM `service_characteristics` WHERE `id` = ?";
+    $sql = "SELECT 
+                    `s`.`name`
+                    FROM `services` `s`";
 
     $serviceId = $request->query->get('service_id');
     $data = $app['db']->fetchAll($sql, array($serviceId));
 
-    return $app->json($data);
+    $dataOutput = [];
+    $i = 0;
+    foreach ($data as $service) {
+        $sql = "        SELECT 
+                                `pc`.`value`,
+                                `sc`.`units`,
+                                `sc`.`name`,
+                                `sc`.`type`,
+                                `sc`.`alias`
+                                FROM `service_characteristics` `sc`
+                                    WHERE `sc`.`services_id` = ?";
+
+        array_push($dataOutput,  $service);
+        $dataChar = $app['db']->fetchAll($sql, array($service['id']));
+        $dataOutput[$i++]['characteristics'] = count($dataChar) ? $dataChar : [];
+    }
+
+    return $app->json($dataOutput);
 })->bind('getServiceCharacteristics');
 
 $app->after(function (Request $request, Response $response) {
