@@ -10,6 +10,7 @@ import {Service} from '../../models/service';
 export class MagicComponent implements OnInit {
 
   public services: Service[] = [];
+  public selectedService: Service = null;
 
   constructor(private staticInfoService: StaticInfoService) {
     this.staticInfoService.getServices().subscribe(services => {
@@ -21,8 +22,11 @@ export class MagicComponent implements OnInit {
   }
 
   private gotServices(services: Service[]) {
-    console.log(services);
     this.services = services;
+  }
+
+  public serviceSelected(service: Service) {
+    this.selectedService = service;
   }
 
 }

@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {CuipasaModule} from './modules/cuipasa/cuipasa.module';
 import {ContactPageComponent} from './modules/cuipasa/pages/contact-page/contact-page.component';
-import {HomePageComponent} from './modules/cuipasa/pages/home/home-page.component';
+import {HomePageComponent} from './modules/cuipasa/pages/home-page/home-page.component';
 /**
  * Created by NM on 5/26/2017.
  */
