@@ -67,7 +67,7 @@ try {
 
                 $newPackage = new Packages($value['name'], $value['price'], $companyService, $value['scraper_id_hint']);
                 foreach ($value['characteristics'] as $alias => $val) {
-                    $newPackage->setCharacteristic($alias, $val);
+                    $newPackage->setCharacteristic($alias, $val, 'n-am');
                 }
                 $em->persist($newPackage);
                 $em->flush();

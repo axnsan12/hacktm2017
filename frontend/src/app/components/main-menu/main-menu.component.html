@@ -22,6 +22,10 @@
             <a class="dropdown-item">Altceva?</a>
           </div>
         </li>
+
+        <li class="nav-item" (click)="authButtonClicked()">
+          <a class="nav-link">Autentificare</a>
+        </li>
       </ul>
       <!--<form class="form-inline waves-effect waves-light">-->
         <!--<input class="form-control" type="text" placeholder="Search">-->
@@ -30,3 +34,21 @@
     </div>
   </div>
 </nav>
+
+
+<!--<button type="button" class="btn btn-primary" (click)="showChildModal()">Open child modal</button>-->
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Child modal</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        I am a child modal, opened from parent component!
+      </div>
+    </div>
+  </div>
+</div>

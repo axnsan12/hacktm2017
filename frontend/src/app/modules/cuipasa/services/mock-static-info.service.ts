@@ -39,29 +39,29 @@ export class MockStaticInfoService {
     1: [
       {
         id: 1,
-        name: 'minute-in-retea',
-        alias: 'Minute în rețea',
+        name: 'Minute în rețea',
+        alias: 'minute-in-retea',
         range: [0, 100],
         mu: 'bucăț'
       },
       {
         id: 2,
-        name: 'minute-naționale',
-        alias: 'Minute naționale',
+        name: 'Minute naționale',
+        alias: 'minute-naționale',
         range: [0, 100],
         mu: 'bucăț'
       },
       {
         id: 3,
-        name: 'sms-nationale',
-        alias: 'SMS naționale',
+        name: 'SMS naționale',
+        alias: 'sms-nationale',
         range: [0, 100],
         mu: 'bucăț'
       },
       {
         id: 4,
-        name: 'internet-mobil',
-        alias: 'Internet mobil',
+        name: 'Internet mobil',
+        alias: 'internet-mobil',
         range: [0, 100],
         mu: 'bucăț'
       }
@@ -69,15 +69,15 @@ export class MockStaticInfoService {
     3: [
       {
         id: 1,
-        name: 'speed',
-        alias: 'Viteză',
+        name: 'Viteză',
+        alias: 'speed',
         range: [0, 100],
         mu: 'bucăț'
       },
       {
         id: 2,
-        name: 'traffic-limit',
-        alias: 'Limită trafic',
+        name: 'Limită trafic',
+        alias: 'traffic-limit',
         range: [0, 100],
         mu: 'bucăț'
       }

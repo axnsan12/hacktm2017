@@ -58,15 +58,20 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
         };
         // console.log(sliderOptions);
         noUiSlider.create(sliderElement, sliderOptions);
-        sliderElement.noUiSlider.on('change', function () {
+        sliderElement.noUiSlider.on('change', () => {
           const limits = sliderElement.noUiSlider.get();
           characteristic.values = [
             Math.round(limits[0]),
             Math.round(limits[1])
           ];
+          this.filtersUpdated();
         });
       }, 50);
     }
+  }
+
+  public filtersUpdated(): void {
+    console.log('filtersUpdated');
   }
 
 }

@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir) 
+
 import json
-import os
 from collections import OrderedDict
 import bs4
-import sys
 from common import scraper_main, get_json, get_soup, ScraperError
 import re
 from urllib.parse import urljoin, urlparse
+from telekom import _format_units
 
 
 def _extract_p_data(elem) -> str:
@@ -50,7 +54,7 @@ def telekom_mobil_abonamente(scraper_url: str):
             feature_words = re.sub('[^a-z]', '', feature_name.lower())
             for alias, kws in feature_kw.items():
                 if all(kw in feature_words for kw in kws.split(' ')):
-                    characteristics[alias] = feature_value
+                    characteristics[alias] = _format_units(feature_value)
                     break
 
         if not all(alias in characteristics for alias in feature_kw.keys()):
@@ -59,9 +63,9 @@ def telekom_mobil_abonamente(scraper_url: str):
             print(f"{abon_name} missing values for [{', '.join(missing)}]")
 
         package = {
-            'name': abon_name,
-            'price': abon_price,
-            'scraper_id_hint': abon_id,
+            'name': abon_name.strip(),
+            'price': _format_units(abon_price),
+            'scraper_id_hint': abon_id.strip(),
             'characteristics': characteristics
         }
         packages.append(package)

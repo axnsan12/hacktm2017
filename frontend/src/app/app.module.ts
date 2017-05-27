@@ -6,6 +6,7 @@ import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {MainMenuComponent} from './components/main-menu/main-menu.component';
+import {ModalModule} from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {MainMenuComponent} from './components/main-menu/main-menu.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ModalModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
