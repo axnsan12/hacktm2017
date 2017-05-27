@@ -6,15 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CompanyService
- *
  * @ORM\Table(name="company_service", indexes={@ORM\Index(name="fk_company_service_companies1_idx", columns={"companies_id"}), @ORM\Index(name="fk_company_service_services1_idx", columns={"services_id"}), @ORM\Index(name="fk_company_service_scrapers1_idx", columns={"scrapers_id"})})
  * @ORM\Entity
  */
-class CompanyService
-{
+class CompanyService {
     /**
      * @var integer
-     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -23,7 +20,6 @@ class CompanyService
 
     /**
      * @var \Models\Companies
-     *
      * @ORM\ManyToOne(targetEntity="Models\Companies")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="companies_id", referencedColumnName="id")
@@ -33,7 +29,6 @@ class CompanyService
 
     /**
      * @var \Models\Scrapers
-     *
      * @ORM\OneToOne(targetEntity="Models\Scrapers", inversedBy="companyService")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="scrapers_id", referencedColumnName="id")
@@ -43,17 +38,15 @@ class CompanyService
 
     /**
      * @var \Models\Services
-     *
      * @ORM\ManyToOne(targetEntity="Models\Services")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="services_id", referencedColumnName="id")
      * })
      */
-    private $services;
+    private $service;
 
     /**
      * @var \Models\Packages
-     *
      * @ORM\OneToMany(targetEntity="Models\Packages", mappedBy="companyService")
      */
     private $packages;
@@ -75,8 +68,8 @@ class CompanyService
     /**
      * @return Services
      */
-    public function getServices() {
-        return $this->services;
+    public function getService() {
+        return $this->service;
     }
 
     /**
