@@ -6,6 +6,7 @@
 // bootstrap.php
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\ResultSetMapping;
 use \Models\Packages;
 use \Models\Scrapers;
 
@@ -14,6 +15,8 @@ require_once "config.php";
 require_once 'autoload.php';
 
 try {
+    $rsm = new ResultSetMapping(); // Fancy native query runner :3
+
     $scriptName = "script_file";
     $inputFileExists = true;
 
@@ -21,10 +24,11 @@ try {
         throw new Exception("Invalid arguments");
     }
 
-    // If no input file exists
-    if (@file_get_contents($argv[1] . ".json") === false) {
+
         $outputFile = @file_get_contents($argv[2] . ".json");
+
         file_put_contents($argv[1] . ".json", $outputFile);
+        file_put_contents("logs/" . $argv[1] . date("d-m-y-h-i-s") . ".json", $outputFile);
 
         $inputData = json_decode($outputFile, true);
 
@@ -32,6 +36,7 @@ try {
             throw new Exception("Invalid json");
         }
 
+        $previousCompanyId = 0;
         foreach ($inputData['packages'] as $value) {
             if (!isset($value['name']) || !isset($value['price'])) {
                 echo "[SKIPPED] No name or price defined for this package" . PHP_EOL;
@@ -45,8 +50,20 @@ try {
             foreach ($scrapers as $scraper) {
                 $scriptName = $scraper->getScriptName();
 
-                /** @var Models\CompanyService[] $companyServices */
+                /** @var Models\CompanyService $companyService */
                 $companyService = $scraper->getCompanyService();
+
+                if ($previousCompanyId != $companyService->getId()) {
+                    $sql = 'DELETE FROM Models\Packages p WHERE p.companyService = ?1';
+                    $query = $em->createQuery($sql);
+                    $query->setParameter(1, $companyService);
+
+                    $res = $query->execute();
+
+                    $em->persist($companyService);
+                    $em->flush();
+                    $previousCompanyId = $companyService->getId();
+                }
 
                 $newPackage = new Packages($value['name'], $value['price'], $companyService, $value['scraper_id_hint']);
                 foreach ($value['characteristics'] as $alias => $val) {
@@ -74,59 +91,6 @@ try {
                 //                }
             }
         }
-    } else {
-        $outputFile = @file_get_contents($argv[2] . ".json");
-        file_put_contents($argv[1] . ".json", $outputFile);
-
-        $inputData = json_decode($outputFile, true);
-
-        if (empty($inputData) || !count($inputData) || !is_array($inputData)) {
-            throw new Exception("Invalid json");
-        }
-
-        foreach ($inputData['packages'] as $value) {
-            if (!isset($value['name']) || !isset($value['price'])) {
-                echo "[SKIPPED] No name or price defined for this package" . PHP_EOL;
-                continue;
-            }
-
-            $scrapersRepo = $em->getRepository("Models\Scrapers");
-            $scrapers = $scrapersRepo->findAll();
-            /** @var Scrapers[] $scrapers */
-
-            foreach ($scrapers as $scraper) {
-                $scriptName = $scraper->getScriptName();
-
-                /** @var Models\CompanyService[] $companyServices */
-                $companyService = $scraper->getCompanyService();
-
-                $newPackage = new Packages($value['name'], $value['price'], $companyService, $value['scraper_id_hint']);
-                foreach ($value['characteristics'] as $alias => $val) {
-                    $newPackage->setCharacteristic($alias, $val);
-                }
-                $em->persist($newPackage);
-                $em->flush();
-
-                //                if (!file_exists($scriptName)) {
-                //                    throw new Exception("script_file not found");
-                //                }
-
-                if (!file_exists($argv[2] . ".json")) {
-                    echo "[WARNING] No input file found, created one ({$argv[2]}.json)" . PHP_EOL;
-                    $inputFileExists = false;
-                    file_put_contents($argv[2], '');
-                }
-
-                if (!file_exists($argv[2] . ".json")) {
-                    throw new Exception("No output");
-                }
-
-                //                if (!system("{$scriptName} {$data['url']} {$argv[3]}", $out)) {
-                //                    throw new Exception("Execution failed");
-                //                }
-            }
-        }
-    }
 } catch (Exception $e) {
     $error = $e->getMessage();
     if ($error == "Invalid arguments") {

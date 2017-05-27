@@ -19,6 +19,13 @@ class CompanyService {
     private $id;
 
     /**
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
      * @var \Models\Companies
      * @ORM\ManyToOne(targetEntity="Models\Companies")
      * @ORM\JoinColumns({
@@ -46,7 +53,7 @@ class CompanyService {
     private $service;
 
     /**
-     * @var \Models\Packages
+     * @var \Models\Packages[]
      * @ORM\OneToMany(targetEntity="Models\Packages", mappedBy="companyService")
      */
     private $packages;
@@ -73,10 +80,16 @@ class CompanyService {
     }
 
     /**
-     * @return mixed
+     * @return \Models\Packages[]
      */
     public function getPackages() {
         return $this->packages;
     }
 
+    /**
+     * @return void
+     */
+    public function dropPackages() {
+        $this->packages->clear();
+    }
 }
