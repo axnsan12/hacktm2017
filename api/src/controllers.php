@@ -258,7 +258,9 @@ $app->get('/get/companies', function (Request $request) use ($app) {
 
 $app->get('/get/packages', function (Request $request) use ($app) {
     $sql = "SELECT 
-                    `p`.*
+                    `p`.`id` AS `id`,
+                    `p`.`name` AS `package_name`,
+                    `p`.`price`
                     FROM `services` `s`
                     JOIN `company_service` `cs`
                         ON `cs`.`services_id` = ?
@@ -270,6 +272,7 @@ $app->get('/get/packages', function (Request $request) use ($app) {
 
     foreach ($data as $package) {
         $sql = "        SELECT 
+                                `pc`.`packages_id`,
                                 `pc`.`value`,
                                 `sc`.`name`,
                                 `sc`.`type`,
@@ -279,7 +282,8 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                                     ON `sc`.`id` = `pc`.`service_characteristics_id`
                                 WHERE `pc`.`packages_id` = ?";
 
-            $package['characteristics'][] = $app['db']->fetchAll($sql, array($package['id']));
+        $data = $app['db']->fetchAll($sql, array($package['id']));
+        $package['characteristics'] = count($data) ? $data : [];
     }
 
     return $app->json($data);
