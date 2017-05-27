@@ -24,16 +24,17 @@ try {
         throw new Exception("Connection error");
     }
 
-
-
-    $outputFile = @file_get_contents($argv[3] . ".json");
-    if ($inputFileExists === false) {
-        file_put_contents($argv[2] . ".json", $outputFile);
+    // If no input file exists
+    if (@file_get_contents($argv[1] . ".json") === false) {
+        $outputFile = @file_get_contents($argv[2] . ".json");
+        file_put_contents($argv[1] . ".json", $outputFile);
 
         $inputData = json_decode($outputFile, true);
-        if (!$inputData) {
+
+        if (empty($inputData) || !count($inputData) || !is_array($inputData)) {
             throw new Exception("Invalid json");
         }
+
 
         $DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
         foreach ($inputData['packages'] as $value) {
@@ -86,7 +87,6 @@ try {
     } else {
 
     }
-
 } catch (Exception $e) {
     $error = $e->getMessage();
     if ($error == "Invalid arguments") {
