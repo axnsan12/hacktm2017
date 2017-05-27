@@ -6,15 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * PackageCharacteristics
- *
  * @ORM\Table(name="package_characteristics", indexes={@ORM\Index(name="fk_package_characteristics_packages1_idx", columns={"packages_id"}), @ORM\Index(name="fk_package_characteristics_service_characteristics1_idx", columns={"service_characteristics_id"})})
  * @ORM\Entity
  */
-class PackageCharacteristics
-{
+class PackageCharacteristics {
     /**
      * @var integer
-     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -23,30 +20,66 @@ class PackageCharacteristics
 
     /**
      * @var string
-     *
      * @ORM\Column(name="value", type="string", length=1024, nullable=false)
      */
     private $value;
 
     /**
      * @var \Models\Packages
-     *
      * @ORM\ManyToOne(targetEntity="Models\Packages")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="packages_id", referencedColumnName="id")
      * })
      */
-    private $packages;
+    private $package;
 
     /**
      * @var \Models\ServiceCharacteristics
-     *
      * @ORM\ManyToOne(targetEntity="Models\ServiceCharacteristics")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="service_characteristics_id", referencedColumnName="id")
      * })
      */
-    private $serviceCharacteristics;
+    private $serviceCharacteristic;
 
+    /**
+     * PackageCharacteristics constructor.
+     * @param string                 $value
+     * @param Packages               $package
+     * @param ServiceCharacteristics $serviceCharacteristic
+     */
+    public function __construct($value, Packages $package, ServiceCharacteristics $serviceCharacteristic) {
+        $this->value = $value;
+        $this->package = $package;
+        $this->serviceCharacteristic = $serviceCharacteristic;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValue() {
+        return $this->value;
+    }
+
+    /**
+     * @return Packages
+     */
+    public function getPackage() {
+        return $this->package;
+    }
+
+    /**
+     * @return ServiceCharacteristics
+     */
+    public function getServiceCharacteristic() {
+        return $this->serviceCharacteristic;
+    }
 
 }
