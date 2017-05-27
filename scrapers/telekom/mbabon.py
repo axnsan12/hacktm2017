@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir) 
+
 import json
-import os
 from collections import OrderedDict
 import bs4
-import sys
 from common import scraper_main, get_json, get_soup, ScraperError
 import re
 from urllib.parse import urljoin, urlparse
