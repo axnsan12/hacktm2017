@@ -261,15 +261,12 @@ $app->get('/get/packages', function (Request $request) use ($app) {
     $sql = "SELECT 
                     `p`.*,
                     (
-                        SELECT 
-                                `pc`.`value`,
-                                `sc`.`name`,
-                                `sc`.`type`,
-                                `sc`.`alias`
+                        SELECT
+                                `sc`.`name`
                                 FROM `package_characteristics` `pc`
                                 LEFT JOIN `service_characteristics` `sc`
                                     ON `sc`.`id` = `pc`.`service_characteristics_id`
-                    ) AS `package_characteristics` 
+                    ) AS `package_value` 
                     FROM `services` `s`
                     JOIN `company_service` `cs`
                         ON `cs`.`services_id` = ?
