@@ -45,11 +45,13 @@ class PackageCharacteristics {
     /**
      * PackageCharacteristics constructor.
      * @param string                 $value
+     * @param string                 $units
      * @param Packages               $package
      * @param ServiceCharacteristics $serviceCharacteristic
      */
-    public function __construct($value, Packages $package, ServiceCharacteristics $serviceCharacteristic) {
+    public function __construct($value, $units, Packages $package, ServiceCharacteristics $serviceCharacteristic) {
         $this->value = $value;
+        $this->units = $units;
         $this->package = $package;
         $this->serviceCharacteristic = $serviceCharacteristic;
     }
@@ -69,6 +71,12 @@ class PackageCharacteristics {
     }
 
     /**
+     * @var string
+     * @ORM\Column(name="units", type="string", length=45, nullable=false)
+     */
+    private $units;
+
+    /**
      * @return Packages
      */
     public function getPackage() {
@@ -80,6 +88,20 @@ class PackageCharacteristics {
      */
     public function getServiceCharacteristic() {
         return $this->serviceCharacteristic;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnits() {
+        return $this->units;
+    }
+
+    /**
+     * @param string $units
+     */
+    public function setUnits($units) {
+        $this->units = $units;
     }
 
 }

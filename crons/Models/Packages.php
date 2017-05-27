@@ -144,9 +144,9 @@ class Packages {
      */
     private $packageCharacteristics;
 
-    public function setCharacteristic($alias, $value) {
+    public function setCharacteristic($alias, $value, $units) {
         $sc = $this->getService()->getCharacteristic($alias);
-        $pc = new PackageCharacteristics($value, $this, $sc);
+        $pc = new PackageCharacteristics($value, $units, $this, $sc);
 
         $this->packageCharacteristics[] = $pc;
     }

@@ -37,6 +37,12 @@ class ServiceCharacteristics {
     private $alias;
 
     /**
+     * @var string
+     * @ORM\Column(name="units", type="string", length=45, nullable=false)
+     */
+    private $units;
+
+    /**
      * @var \Models\Services
      * @ORM\ManyToOne(targetEntity="Models\Services")
      * @ORM\JoinColumns({
@@ -44,18 +50,6 @@ class ServiceCharacteristics {
      * })
      */
     private $service;
-
-    /**
-     * ServiceCharacteristics constructor.
-     * @param string $name
-     * @param string $type
-     * @param string $alias
-     */
-    public function __construct($name, $type, $alias) {
-        $this->name = $name;
-        $this->type = $type;
-        $this->alias = $alias;
-    }
 
     /**
      * @return string
@@ -111,5 +105,19 @@ class ServiceCharacteristics {
      */
     public function getService() {
         return $this->service;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnits() {
+        return $this->units;
+    }
+
+    /**
+     * @param string $units
+     */
+    public function setUnits($units) {
+        $this->units = $units;
     }
 }
