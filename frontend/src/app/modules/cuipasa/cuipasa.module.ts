@@ -9,6 +9,8 @@ import {HeaderComponent} from './components/header/header.component';
 import {MagicComponent} from './components/magic/magic.component';
 import {StaticInfoService} from './services/static-info.service';
 import {MockStaticInfoService} from './services/mock-static-info.service';
+import { ServiceSelectorComponent } from './components/magic/magic-components/service-selector/service-selector.component';
+import { CharacteristicsComponent } from './components/magic/magic-components/characteristics/characteristics.component';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import {MockStaticInfoService} from './services/mock-static-info.service';
     HomePageComponent,
     ContactPageComponent,
     HeaderComponent,
-    MagicComponent
+    MagicComponent,
+    ServiceSelectorComponent,
+    CharacteristicsComponent
   ],
   exports: [HomePageComponent],
   providers: [

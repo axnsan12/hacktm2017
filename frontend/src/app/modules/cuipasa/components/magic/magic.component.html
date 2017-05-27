@@ -7,9 +7,5 @@
       1. Alege tipul de serviciul dorit:
     </div>
   </div>
-  <div class="row">
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let service of services">
-      <button class="btn btn-outline-secondary waves-effect col-12" (click)="serviceSelected(service);">{{service.name}}</button>
-    </div>
-  </div>
+  <app-service-selector (selectedServiceChanged)="selectedServiceChanged($event)"></app-service-selector>
 </div>
