@@ -69,6 +69,7 @@ $app->get('/get/packages', function (Request $request) use ($app) {
 
 $app->get('/get/service/characteristics', function (Request $request) use ($app) {
     $sql = "SELECT 
+                    `s`.`id`,
                     `s`.`name`
                     FROM `services` `s`";
 
@@ -79,7 +80,6 @@ $app->get('/get/service/characteristics', function (Request $request) use ($app)
     $i = 0;
     foreach ($data as $service) {
         $sql = "        SELECT 
-                                `pc`.`value`,
                                 `sc`.`units`,
                                 `sc`.`name`,
                                 `sc`.`type`,
