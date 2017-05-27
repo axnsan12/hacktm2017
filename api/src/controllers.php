@@ -106,7 +106,7 @@ $app->get('/get/min-max', function (Request $request) use ($app) {
                   WHERE `sc`.`services_id` = ?";
 
     $serviceId = $request->query->get('service_id');
-    $data = $app['db']->fetchAll($sql, array($serviceId));
+    $data = $app['db']->fetchAssoc($sql, array($serviceId));
 
     if (empty($data['minValue'])) {
         $data['minValue'] = 0;
