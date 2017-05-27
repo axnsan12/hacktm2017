@@ -1,3 +1,17 @@
-<p>
-  characteristics works!
-</p>
+
+<div class="row">
+  <div class="col-sm-6 col-md-4 col-lg-3">
+    <div *ngFor="let characteristic of characteristics">
+      <div class="cuipasa-checkbox" (click)="characteristic.selected = !characteristic.selected">
+        <i class="fa"
+           aria-hidden="true"
+           [ngClass]="{'fa-check-square-o': characteristic.selected, 'fa-square-o': !characteristic.selected}"
+        ></i> {{characteristic.alias}}
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    altceva
+  </div>
+
+</div>
