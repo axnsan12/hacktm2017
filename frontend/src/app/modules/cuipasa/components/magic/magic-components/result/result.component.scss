@@ -1,3 +1,5 @@
+@import "../../../../../../../styles";
+
 :host:not(:last-child) {
   margin-bottom: 15px;
 }
@@ -10,12 +12,12 @@
   padding-left: 0;
   padding-right: 0;
 
-  background-color: #F5D061;
+  background-color: $cuipasa-yellow-light;
 }
 
 .price {
   background-color: #E6AF2E;
-  color: #282F44;
+  color: $cuipasa-blue;
   padding: 25px;
   text-align: center;
 }
@@ -25,7 +27,7 @@
 }
 
 .details {
-  color: #282F44;
+  color: $cuipasa-blue;
   padding: 25px;
 }
 
@@ -37,12 +39,12 @@ ul.properties li {
   float: left;
   padding: 5px 15px;
   margin-right: 15px;
-  background-color: #ECECEC;
+  background-color: $cuipasa-grey;
 }
 
 .take-offer {
-  background-color: #282F44;
-  color: #E6AF2E;
+  background-color: $cuipasa-blue;
+  color: $cuipasa-yellow;
   padding: 25px;
 }
 

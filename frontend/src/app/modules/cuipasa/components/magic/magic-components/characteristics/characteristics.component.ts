@@ -4,6 +4,8 @@ import {Characteristic} from '../../../../models/characteristic';
 import {StaticInfoService} from '../../../../services/static-info.service';
 import 'rxjs/add/operator/toPromise';
 
+declare var noUiSlider: any;
+
 @Component({
   selector: 'app-characteristics',
   templateUrl: './characteristics.component.html',
@@ -15,6 +17,8 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
   public service: Service;
 
   public characteristics: Characteristic[];
+
+  public someRange = 2;
 
   constructor(private staticInfoService: StaticInfoService) {
   }
@@ -34,6 +38,35 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
         this.characteristics = characteristics;
         subscription.unsubscribe();
       });
+  }
+
+  public toggleCharacteristic(characteristic): void {
+    characteristic.selected = !characteristic.selected;
+    if (characteristic.selected) {
+      setTimeout(() => {
+        const className = 'slider-' + characteristic.id;
+        const sliderElement: any = document.getElementsByClassName(className)[0];
+
+        const sliderOptions = {
+          start: characteristic.range,
+          connect: true,
+          step: 10,
+          range: {
+            'min': characteristic.range[0],
+            'max': characteristic.range[1]
+          }
+        };
+        // console.log(sliderOptions);
+        noUiSlider.create(sliderElement, sliderOptions);
+        sliderElement.noUiSlider.on('change', function () {
+          const limits = sliderElement.noUiSlider.get();
+          characteristic.values = [
+            Math.round(limits[0]),
+            Math.round(limits[1])
+          ];
+        });
+      }, 50);
+    }
   }
 
 }

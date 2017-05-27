@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Service} from '../models/service';
 import {Observer} from 'rxjs/Observer';
-import {Characteristic} from "../models/characteristic";
+import {Characteristic} from '../models/characteristic';
 
 @Injectable()
 export class MockStaticInfoService {
@@ -35,34 +35,46 @@ export class MockStaticInfoService {
       {
         id: 1,
         name: 'minute-in-retea',
-        alias: 'Minute în rețea'
+        alias: 'Minute în rețea',
+        range: [0, 100],
+        mu: 'bucăț'
       },
       {
         id: 2,
         name: 'minute-naționale',
-        alias: 'Minute naționale'
-      },
-      {
-        id: 2,
-        name: 'sms-nationale',
-        alias: 'SMS naționale'
+        alias: 'Minute naționale',
+        range: [0, 100],
+        mu: 'bucăț'
       },
       {
         id: 3,
+        name: 'sms-nationale',
+        alias: 'SMS naționale',
+        range: [0, 100],
+        mu: 'bucăț'
+      },
+      {
+        id: 4,
         name: 'internet-mobil',
-        alias: 'Internet mobil'
+        alias: 'Internet mobil',
+        range: [0, 100],
+        mu: 'bucăț'
       }
     ],
     3: [
       {
         id: 1,
         name: 'speed',
-        alias: 'Viteză'
+        alias: 'Viteză',
+        range: [0, 100],
+        mu: 'bucăț'
       },
       {
-        id: 1,
+        id: 2,
         name: 'traffic-limit',
-        alias: 'Limită trafic'
+        alias: 'Limită trafic',
+        range: [0, 100],
+        mu: 'bucăț'
       }
     ]
   };
