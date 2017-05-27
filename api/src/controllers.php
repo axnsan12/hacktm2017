@@ -249,6 +249,22 @@ $app->get('/get/services', function (Request $request) use ($app) {
     return $app->json($data);
 })->bind('getServices');
 
+$app->get('/get/companies', function (Request $request) use ($app) {
+    $sql = "SELECT * FROM `companies`";
+
+    $data = $app['db']->fetchAll($sql);
+
+    return $app->json($data);
+})->bind('getCompanies');
+
+$app->get('/get/packages', function (Request $request) use ($app) {
+    $sql = "SELECT * FROM `packages`";
+
+    $data = $app['db']->fetchAll($sql);
+
+    return $app->json($data);
+})->bind('getPackages');
+
 $app->after(function (Request $request, Response $response) {
     $response->headers->set('Access-Control-Allow-Origin', '*');
 });
