@@ -4,10 +4,9 @@ import os
 from collections import OrderedDict
 import bs4
 import sys
-from common import scraper_main, get_json, get_soup, ScraperError
+from common import scraper_main, get_json, get_soup, ScraperError, format_units
 import re
 from urllib.parse import urljoin, urlparse
-from telekom import _format_units
 
 
 def _extract_p_data(elem) -> str:
@@ -24,8 +23,8 @@ def telekom_mobil_abonamente(scraper_url: str):
     soup = bs4.BeautifulSoup(products_html, 'html5lib')
 
     feature_kw = OrderedDict([
-        ('mobil_min_nat', 'min internationale'),
-        ('mobil_min_internat', 'min nationale'),
+        ('mobil_min_internat', 'min internationale'),
+        ('mobil_min_nat', 'min nationale'),
         ('mobil_date', 'trafic date'),
         ('mobil_sms_nat', 'sms nationale')
     ])
@@ -51,7 +50,7 @@ def telekom_mobil_abonamente(scraper_url: str):
             feature_words = re.sub('[^a-z]', '', feature_name.lower())
             for alias, kws in feature_kw.items():
                 if all(kw in feature_words for kw in kws.split(' ')):
-                    characteristics[alias] = _format_units(feature_value)
+                    characteristics[alias] = format_units(feature_value)
                     break
 
         if not all(alias in characteristics for alias in feature_kw.keys()):
@@ -61,7 +60,7 @@ def telekom_mobil_abonamente(scraper_url: str):
 
         package = {
             'name': abon_name.strip(),
-            'price': _format_units(abon_price),
+            'price': format_units(abon_price),
             'scraper_id_hint': abon_id.strip(),
             'characteristics': characteristics
         }

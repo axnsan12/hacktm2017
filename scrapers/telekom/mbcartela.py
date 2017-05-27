@@ -3,9 +3,8 @@ import json
 from collections import OrderedDict
 import bs4
 import sys
-from common import scraper_main, get_json
+from common import scraper_main, get_json, format_units, url_last_path, extract_features
 import re
-from telekom import _url_last_path, _format_units
 
 
 def telekom_mobil_cartele(scraper_url: str):
@@ -23,30 +22,18 @@ def telekom_mobil_cartele(scraper_url: str):
     extraoptiuni = soup.select('div.extraoptiuniTabWrapper')
     for extraop in extraoptiuni:
         detail_url = extraop.select_one('div.prepaidButtons a')['href']
-        abon_id = _url_last_path(detail_url, scraper_url)
+        abon_id = url_last_path(detail_url, scraper_url)
 
         abon_name = extraop.select_one('div.prepaidTabTitle strong').text
         abon_price = extraop.select_one('.prepaidPrice strong').text
 
         features = extraop.select('.prepaidTabDescription .ptd_OfferRow')
-        characteristics = {}
-
-        for feature in features:
-            feature_name, feature_value = feature.select_one('p').text, feature.select_one('h4').text
-            feature_words = re.sub('[^a-z]', '', feature_name.lower())
-            for alias, kws in feature_kw.items():
-                if all(kw in feature_words for kw in kws.split(' ')):
-                    characteristics[alias] = _format_units(feature_value)
-                    break
-
-        if not all(alias in characteristics for alias in feature_kw.keys()):
-            missing = set(feature_kw.keys()) - set(characteristics.keys())
-            # raise ScraperError(f"{abon_name} missing values for [{', '.join(missing)}]")
-            print(f"{abon_name} missing values for [{', '.join(missing)}]")
+        features = [(feature.select_one('p').text, feature.select_one('h4').text) for feature in features]
+        characteristics = extract_features(features, feature_kw, abon_name)
 
         package = {
             'name': abon_name.strip(),
-            'price': _format_units(abon_price),
+            'price': format_units(abon_price),
             'scraper_id_hint': abon_id.strip(),
             'characteristics': characteristics
         }

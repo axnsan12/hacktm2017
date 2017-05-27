@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 import json
-import re
 
 import sys
 
-from common import get_soup, scraper_main
-from telekom import _url_last_path, _parse_metric, _format_units
+from common import get_soup, scraper_main, format_units, parse_metric, url_last_path
 
 
 def telekom_internet(scraper_url: str):
@@ -18,20 +16,20 @@ def telekom_internet(scraper_url: str):
         name = oferta.select_one('h2').text
 
         detail_url = oferta.select_one('.bottomContent a')['href']
-        id_hint = _url_last_path(detail_url, scraper_url)
+        id_hint = url_last_path(detail_url, scraper_url)
 
         characteristics = {}
         for feature in oferta.select('ul li'):
             feature_text = feature.text.lower()
-            speed = _parse_metric(feature_text, ['Mbps', 'Gbps'])
+            speed = parse_metric(feature_text, ['Mbps', 'Gbps'])
             if speed:
-                characteristics['inet_down'] = characteristics['inet_up'] = _format_units(speed)
+                characteristics['inet_down'] = characteristics['inet_up'] = format_units(speed)
             elif 'inclus' in feature_text:
                 characteristics['inet_router'] = True
 
         package = {
             'name': name.strip(),
-            'price': _format_units(price),
+            'price': format_units(price),
             'scraper_id_hint': id_hint.strip(),
             'characteristics': characteristics
         }
