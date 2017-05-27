@@ -178,8 +178,8 @@ CREATE TABLE IF NOT EXISTS `hacktm`.`package_characteristics` (
   CONSTRAINT `fk_package_characteristics_packages1`
     FOREIGN KEY (`packages_id`)
     REFERENCES `hacktm`.`packages` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_package_characteristics_service_characteristics1`
     FOREIGN KEY (`service_characteristics_id`)
     REFERENCES `hacktm`.`service_characteristics` (`id`)
