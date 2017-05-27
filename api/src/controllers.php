@@ -241,22 +241,13 @@ $app->get('/get/reviews_average', function (Request $request) use ($app) {
     return $app->json($data);
 })->bind('getReviewsAverage');
 
-$app->get('/get/clients', function (Request $request) use ($app) {
-    $sql = "SELECT 
-                    `cc`.`client_id` AS `client_id`,
-                    `cc`.`client_name` AS `client_name`,
-                    `cc`.`date_added` AS `date_added`
-                    FROM `consultants_clients` `cc`
-                    JOIN `clients_reviews` `cr`
-                      ON `cr`.`client_id` = `cc`.`client_id`
-                    WHERE 
-                      `cc`.`parent_id` = ?";
+$app->get('/get/services', function (Request $request) use ($app) {
+    $sql = "SELECT * FROM `services`";
 
-    $consultantId = $request->query->get('id');
-    $data = $app['db']->fetchAll($sql, array((int)$consultantId));
+    $data = $app['db']->fetchAll($sql);
 
     return $app->json($data);
-})->bind('getClients');
+})->bind('getServices');
 
 $app->after(function (Request $request, Response $response) {
     $response->headers->set('Access-Control-Allow-Origin', '*');
