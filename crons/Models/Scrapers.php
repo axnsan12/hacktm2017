@@ -6,18 +6,17 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Scrapers
- *
  * @ORM\Table(name="scrapers")
  * @ORM\Entity
  */
-class Scrapers
-{
+class Scrapers {
     /**
      * @return int
      */
     public function getId() {
         return $this->id;
     }
+
     /**
      * @return string
      */
@@ -111,7 +110,6 @@ class Scrapers
 
     /**
      * @var integer
-     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -120,49 +118,42 @@ class Scrapers
 
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=127, nullable=false)
      */
     private $name;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="url", type="string", length=127, nullable=false)
      */
     private $url;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="script_name", type="string", length=127, nullable=false)
      */
     private $scriptName;
 
     /**
      * @var boolean
-     *
      * @ORM\Column(name="enabled", type="boolean", nullable=false)
      */
     private $enabled;
 
     /**
      * @var \DateTime
-     *
      * @ORM\Column(name="last_updated", type="datetime", nullable=true)
      */
     private $lastUpdated;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="error", type="text", length=65535, nullable=true)
      */
     private $error;
 
     /**
      * @var \Models\CompanyService
-     *
      * @ORM\OneToOne(targetEntity="Models\CompanyService", mappedBy="scraper")
      */
     private $companyService;

@@ -32,7 +32,6 @@ try {
             throw new Exception("Invalid json");
         }
 
-        // $DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
         foreach ($inputData['packages'] as $value) {
             if (!isset($value['name']) || !isset($value['price'])) {
                 echo "[SKIPPED] No name or price defined for this package" . PHP_EOL;
@@ -40,7 +39,8 @@ try {
             }
 
             $scrapersRepo = $em->getRepository("Models\Scrapers");
-            $scrapers = $scrapersRepo->findAll();  /** @var Scrapers[] $scrapers */
+            $scrapers = $scrapersRepo->findAll();
+            /** @var Scrapers[] $scrapers */
 
             foreach ($scrapers as $scraper) {
                 $scriptName = $scraper->getScriptName();
@@ -48,14 +48,16 @@ try {
                 /** @var Models\CompanyService[] $companyServices */
                 $companyService = $scraper->getCompanyService();
 
-                $newPackage = new Packages($value['name'], $value['price'], $companyService,null);
-
+                $newPackage = new Packages($value['name'], $value['price'], $companyService, $value['scraper_id_hint']);
+                foreach ($value['characteristics'] as $alias => $val) {
+                    $newPackage->setCharacteristic($alias, $val);
+                }
                 $em->persist($newPackage);
                 $em->flush();
 
-                if (!file_exists($scriptName)) {
-                    throw new Exception("script_file not found");
-                }
+                //                if (!file_exists($scriptName)) {
+                //                    throw new Exception("script_file not found");
+                //                }
 
                 if (!file_exists($argv[2] . ".json")) {
                     echo "[WARNING] No input file found, created one ({$argv[2]}.json)" . PHP_EOL;
@@ -63,17 +65,67 @@ try {
                     file_put_contents($argv[2], '');
                 }
 
-                if (!file_exists($argv[3] . ".json")) {
+                if (!file_exists($argv[2] . ".json")) {
                     throw new Exception("No output");
                 }
 
-                if (!system("{$scriptName} {$data['url']} {$argv[3]}", $out)) {
-                    throw new Exception("Execution failed");
-                }
+                //                if (!system("{$scriptName} {$data['url']} {$argv[3]}", $out)) {
+                //                    throw new Exception("Execution failed");
+                //                }
             }
         }
     } else {
+        $outputFile = @file_get_contents($argv[2] . ".json");
+        file_put_contents($argv[1] . ".json", $outputFile);
 
+        $inputData = json_decode($outputFile, true);
+
+        if (empty($inputData) || !count($inputData) || !is_array($inputData)) {
+            throw new Exception("Invalid json");
+        }
+
+        foreach ($inputData['packages'] as $value) {
+            if (!isset($value['name']) || !isset($value['price'])) {
+                echo "[SKIPPED] No name or price defined for this package" . PHP_EOL;
+                continue;
+            }
+
+            $scrapersRepo = $em->getRepository("Models\Scrapers");
+            $scrapers = $scrapersRepo->findAll();
+            /** @var Scrapers[] $scrapers */
+
+            foreach ($scrapers as $scraper) {
+                $scriptName = $scraper->getScriptName();
+
+                /** @var Models\CompanyService[] $companyServices */
+                $companyService = $scraper->getCompanyService();
+
+                $newPackage = new Packages($value['name'], $value['price'], $companyService, $value['scraper_id_hint']);
+                foreach ($value['characteristics'] as $alias => $val) {
+                    $newPackage->setCharacteristic($alias, $val);
+                }
+                $em->persist($newPackage);
+                $em->flush();
+
+                //                if (!file_exists($scriptName)) {
+                //                    throw new Exception("script_file not found");
+                //                }
+
+                if (!file_exists($argv[2] . ".json")) {
+                    echo "[WARNING] No input file found, created one ({$argv[2]}.json)" . PHP_EOL;
+                    $inputFileExists = false;
+                    file_put_contents($argv[2], '');
+                }
+
+                if (!file_exists($argv[2] . ".json")) {
+                    throw new Exception("No output");
+                }
+
+                //                if (!system("{$scriptName} {$data['url']} {$argv[3]}", $out)) {
+                //                    throw new Exception("Execution failed");
+                //                }
+            }
+        }
     }
 } catch (Exception $e) {
     $error = $e->getMessage();
