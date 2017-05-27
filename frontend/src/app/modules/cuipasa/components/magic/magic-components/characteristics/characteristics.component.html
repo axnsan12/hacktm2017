@@ -5,7 +5,7 @@
         <i class="fa"
            aria-hidden="true"
            [ngClass]="{'fa-check-square-o': characteristic.selected, 'fa-square-o': !characteristic.selected}"
-        ></i> {{characteristic.alias}}
+        ></i> {{characteristic.name}}
       </div>
     </div>
   </div>
@@ -13,7 +13,7 @@
     <div *ngFor="let characteristic of characteristics;">
       <div *ngIf="characteristic.selected">
 
-        {{characteristic.alias}}<span *ngIf="characteristic.values && characteristic.values.length == 2">: de la {{characteristic.values[0]}} la {{characteristic.values[1]}} {{characteristic.mu}} </span>
+        {{characteristic.name}}<span *ngIf="characteristic.values && characteristic.values.length == 2">: de la {{characteristic.values[0]}} la {{characteristic.values[1]}} {{characteristic.mu}} </span>
 
         <div class="slider" [ngClass]="'slider-'+characteristic.id"></div>
 
