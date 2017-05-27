@@ -9,10 +9,10 @@ import {HeaderComponent} from './components/header/header.component';
 import {MagicComponent} from './components/magic/magic.component';
 import {StaticInfoService} from './services/static-info.service';
 import {MockStaticInfoService} from './services/mock-static-info.service';
-import { ServiceSelectorComponent } from './components/magic/magic-components/service-selector/service-selector.component';
-import { CharacteristicsComponent } from './components/magic/magic-components/characteristics/characteristics.component';
-import { ResultsComponent } from './components/magic/magic-components/results/results.component';
-import { ResultComponent } from './components/magic/magic-components/result/result.component';
+import {ServiceSelectorComponent} from './components/magic/magic-components/service-selector/service-selector.component';
+import {CharacteristicsComponent} from './components/magic/magic-components/characteristics/characteristics.component';
+import {ResultsComponent} from './components/magic/magic-components/results/results.component';
+import {ResultComponent} from './components/magic/magic-components/result/result.component';
 
 
 @NgModule({

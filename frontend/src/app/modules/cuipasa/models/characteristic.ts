@@ -3,4 +3,6 @@ export interface Characteristic {
   name: string;
   alias: string;
   selected?: boolean;
+  range?: any[];
+  mu: string;
 }

@@ -5,8 +5,7 @@ import {HttpModule} from '@angular/http';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import { MainMenuComponent } from './components/main-menu/main-menu.component';
-import {HeaderComponent} from "./modules/cuipasa/components/header/header.component";
+import {MainMenuComponent} from './components/main-menu/main-menu.component';
 
 @NgModule({
   declarations: [
