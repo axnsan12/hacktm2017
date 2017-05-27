@@ -103,7 +103,9 @@ $app->get('/get/min-max', function (Request $request) use ($app) {
                   FROM `service_characteristics` `sc`
                   JOIN `package_characteristics` `pc`
                     ON `pc`.`service_characteristics_id` = `sc`.`id`
-                  WHERE `sc`.`services_id` = ?";
+                  WHERE `sc`.`services_id` = ?
+                  GROUP BY `pc`.`service_characteristics_id`
+                  ";
 
     $serviceId = $request->query->get('service_id');
     $data = $app['db']->fetchAll($sql, array($serviceId));
