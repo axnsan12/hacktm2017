@@ -97,7 +97,9 @@ $app->get('/get/service/characteristics', function (Request $request) use ($app)
 })->bind('getServiceCharacteristics');
 
 $app->get('/get/min-max', function (Request $request) use ($app) {
-    $sql = "SELECT 
+    $sql = "SELECT
+                  `sc`.`id` AS `sc_id`,
+                  `pc`.`id` AS `pc_id`,
                   MIN(`pc`.`value`) AS `minValue`,
                   MAX(`pc`.`value`) AS `maxValue`
                   FROM `service_characteristics` `sc`
