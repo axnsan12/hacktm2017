@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {HomePageComponent} from './pages/home/home-page.component';
 import {ContactPageComponent} from './pages/contact-page/contact-page.component';
 import {ApiService} from './services/api.service';
-import { HeaderComponent } from './components/header/header.component';
+import {HeaderComponent} from './components/header/header.component';
 
 @NgModule({
   imports: [
