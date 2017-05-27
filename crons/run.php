@@ -24,8 +24,7 @@ try {
         throw new Exception("Invalid arguments");
     }
 
-    // If no input file exists
-    if (@file_get_contents($argv[1] . ".json") === false) {
+
         $outputFile = @file_get_contents($argv[2] . ".json");
 
         file_put_contents($argv[1] . ".json", $outputFile);
@@ -92,7 +91,6 @@ try {
                 //                }
             }
         }
-    }
 } catch (Exception $e) {
     $error = $e->getMessage();
     if ($error == "Invalid arguments") {
