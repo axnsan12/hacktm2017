@@ -106,15 +106,7 @@ $app->get('/get/min-max', function (Request $request) use ($app) {
                   WHERE `sc`.`services_id` = ?";
 
     $serviceId = $request->query->get('service_id');
-    $data = $app['db']->fetchAssoc($sql, array($serviceId));
-
-    if (empty($data['minValue'])) {
-        $data['minValue'] = 0;
-    }
-
-    if (empty($data['maxValue'])) {
-        $data['maxValue'] = 0;
-    }
+    $data = $app['db']->fetchAll($sql, array($serviceId));
 
     return $app->json($data);
 })->bind('getMinMax');
