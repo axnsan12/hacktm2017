@@ -34,6 +34,7 @@ $app->get('/get/companies', function (Request $request) use ($app) {
 
 $app->get('/get/packages', function (Request $request) use ($app) {
     $sql = "SELECT 
+                    `c`.`name` AS `company_name`,
                     `s`.`id` AS `service_id`,
                     `p`.`id` AS `id`,
                     `p`.`name` AS `package_name`,
@@ -43,6 +44,8 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                         ON `cs`.`services_id` = ?
                     JOIN `packages` `p`
                         ON `p`.`company_service_id` = `cs`.`id`
+                    JOIN `companies` `c`
+                                    ON `c`.`id` = `cs`.`id`
                         GROUP BY `p`.`id`";
 
     $serviceId = $request->query->get('service_id');
@@ -53,7 +56,6 @@ $app->get('/get/packages', function (Request $request) use ($app) {
     foreach ($data as $package) {
         $sql = "        SELECT 
                                 `sc`.`id` AS `id`,
-                                `c`.`name` AS `company_name`,
                                 `pc`.`value`,
                                 `sc`.`units`,
                                 `sc`.`name`,
@@ -64,8 +66,6 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                                     ON `sc`.`id` = `pc`.`service_characteristics_id`
                                 JOIN `company_service` `cs`
                                     ON `cs`.`services_id` = ?
-                                JOIN `companies` `c`
-                                    ON `c`.`id` = `cs`.`id`
                                 WHERE `pc`.`packages_id` = ?";
         array_push($dataOutput, $package);
         $dataChar = $app['db']->fetchAll($sql, array($package['service_id'], $package['id']));
