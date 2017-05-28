@@ -121,6 +121,13 @@ $app->get('/get/min-max', function (Request $request) use ($app) {
     $serviceId = $request->query->get('service_id');
     $data = $app['db']->fetchAll($sql, array($serviceId));
 
+    $i = 0;
+    foreach ($data as $valueData) {
+        $data[$i]['minValue'] = ($valueData['minValue'] == "nelimitat") ? 99999 : $valueData['minValue'];
+        $data[$i]['maxValue'] = ($valueData['maxValue'] == "nelimitat") ? 99999 : $valueData['maxValue'];
+        $i++;
+    }
+
     return $app->json($data);
 })->bind('getMinMax');
 
