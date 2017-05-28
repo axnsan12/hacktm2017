@@ -52,4 +52,42 @@ ul.properties li {
   font-weight: 500;
 }
 
+.nav-tabs .nav-item a.nav-link {
+  color: $cuipasa-grey;
+}
+
+.nav-tabs .nav-item a.nav-link.active {
+  color: #616161;
+}
+
+ul.nav-tabs {
+  display:flex;
+  justify-content:space-between;
+  background-color:$cuipasa-yellow!important;
+}
+
+.md-form .prefix.active {
+  color:$cuipasa-yellow!important;
+}
+
+.md-form label.active {
+  color:$cuipasa-yellow!important;
+}
+
+.form-control:focus {
+  border-color:$cuipasa-yellow!important;
+  box-shadow: none !important;
+}
+
+.btn-cuipasa-grey, .btn-cuipasa-grey i {
+  background-color: $cuipasa-grey!important ;
+  color:#616161!important ;
+}
+//
+//#tabContent {
+//  background-color:$cuipasa-yellow!important;
+//}
+//.modal-button {
+//  width:100px;
+//}
 //, .result-offer .details, .result-offer .take-offer
