@@ -34,6 +34,7 @@ $app->get('/get/companies', function (Request $request) use ($app) {
 
 $app->get('/get/packages', function (Request $request) use ($app) {
     $sql = "SELECT 
+                    `s`.`id` AS `service_id`,
                     `p`.`id` AS `id`,
                     `p`.`name` AS `package_name`,
                     `p`.`price`
@@ -41,7 +42,8 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                     JOIN `company_service` `cs`
                         ON `cs`.`services_id` = ?
                     JOIN `packages` `p`
-                        ON `p`.`company_service_id` = `cs`.`id`";
+                        ON `p`.`company_service_id` = `cs`.`id`
+                        GROUP BY `p`.`id`";
 
     $serviceId = $request->query->get('service_id');
     $data = $app['db']->fetchAll($sql, array($serviceId));
@@ -50,17 +52,22 @@ $app->get('/get/packages', function (Request $request) use ($app) {
     $i = 0;
     foreach ($data as $package) {
         $sql = "        SELECT 
+                                `c`.`name` AS `company_name`,
                                 `pc`.`value`,
                                 `sc`.`units`,
                                 `sc`.`name`,
                                 `sc`.`type`,
                                 `sc`.`alias`
                                 FROM `package_characteristics` `pc`
-                                LEFT JOIN `service_characteristics` `sc`
+                                JOIN `service_characteristics` `sc`
                                     ON `sc`.`id` = `pc`.`service_characteristics_id`
+                                JOIN `company_service` `cs`
+                                    ON `cs`.`services_id` = ?
+                                JOIN `companies` `c`
+                                    ON `c`.`id` = `cs`.`id`
                                 WHERE `pc`.`packages_id` = ?";
         array_push($dataOutput, $package);
-        $dataChar = $app['db']->fetchAll($sql, array($package['id']));
+        $dataChar = $app['db']->fetchAll($sql, array($package['service_id'], $package['id']));
         $dataOutput[$i++]['characteristics'] = count($dataChar) ? $dataChar : [];
     }
 
