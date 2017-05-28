@@ -47,12 +47,17 @@ ul.properties li {
 
 .take-offer {
   background-color: $cuipasa-blue;
-  color: $cuipasa-yellow;
+  //color: $cuipasa-yellow;
   padding: 25px;
 }
 
 .take-offer h4 {
   font-weight: 500;
+}
+
+.accept-offer-button {
+  background-color:$cuipasa-yellow-light;
+  color:$cuipasa-blue!important;
 }
 
 
