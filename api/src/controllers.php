@@ -54,7 +54,7 @@ $app->get('/get/packages', function (Request $request) use ($app) {
     $dataOutput = [];
     $i = 0;
     foreach ($data as $package) {
-        $sql = "        SELECT 
+        $sql = "        SELECT DISTINCT
                                 `sc`.`id` AS `id`,
                                 `pc`.`value`,
                                 `sc`.`units`,
