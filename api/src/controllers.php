@@ -34,19 +34,19 @@ $app->get('/get/companies', function (Request $request) use ($app) {
 
 $app->get('/get/packages', function (Request $request) use ($app) {
     $sql = "SELECT 
-                    `c`.`name` AS `company_name`,
                     `s`.`id` AS `service_id`,
                     `p`.`id` AS `id`,
                     `p`.`name` AS `package_name`,
-                    `p`.`price`
+                    `p`.`price`,
+                    `c`.`name` AS `company_name`
                     FROM `services` `s`
                     JOIN `company_service` `cs`
                         ON `cs`.`services_id` = ?
                     JOIN `packages` `p`
                         ON `p`.`company_service_id` = `cs`.`id`
                     JOIN `companies` `c`
-                                    ON `c`.`id` = `cs`.`id`
-                        ";
+                        ON `c`.`id` = `cs`.`companies_id`
+                        GROUP BY `p`.`id`";
 
     $serviceId = $request->query->get('service_id');
     $data = $app['db']->fetchAll($sql, array($serviceId));
