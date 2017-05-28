@@ -5,9 +5,7 @@
     <!--[ngClass]="{'btn-outline-cuipasa': !isServiceSelected(service), 'btn-cuipasa': isServiceSelected(service)}"-->
     <!--(click)="serviceClicked(service);">{{service.name}}</button>-->
 
-    <div class="icon-for-service col-10"
-         [ngClass]="(isServiceSelected(service) ? 'active ': '') + 'icon-for-service-'+service.alias">
-
+    <div class="icon-for-service col-10" [ngClass]="(isServiceSelected(service) ? 'active ': '') + 'icon-for-service-'+service.alias">
 
   </div>
   {{service.name}}
