@@ -50,6 +50,7 @@ $app->get('/get/packages', function (Request $request) use ($app) {
     $i = 0;
     foreach ($data as $package) {
         $sql = "        SELECT 
+                                `c`.`name` AS `company_name`,
                                 `pc`.`value`,
                                 `sc`.`units`,
                                 `sc`.`name`,
@@ -58,6 +59,10 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                                 FROM `package_characteristics` `pc`
                                 LEFT JOIN `service_characteristics` `sc`
                                     ON `sc`.`id` = `pc`.`service_characteristics_id`
+                                JOIN `company_service` `cs`
+                                    ON `cs`.`services_id` = `s`.`id`
+                                JOIN `companies` `c`
+                                    ON `c`.`id` = `cs`.`id`
                                 WHERE `pc`.`packages_id` = ?";
         array_push($dataOutput, $package);
         $dataChar = $app['db']->fetchAll($sql, array($package['id']));
