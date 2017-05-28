@@ -1,7 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {DataService} from '../../../../services/data.service';
-import {Service} from '../../../../models/service';
 import {Package} from '../../../../models/package';
+import {MagicModel} from '../../../../models/magic-model';
+import {Characteristic} from "../../../../models/characteristic";
 
 @Component({
   selector: 'app-results',
@@ -11,9 +12,11 @@ import {Package} from '../../../../models/package';
 export class ResultsComponent implements OnInit, OnChanges {
 
   @Input()
-  public service: Service = null;
+  public magicData: MagicModel = null;
   private oldServiceId: number = -1;
-  public packages: Package[];
+  public packages: Package[] = [];
+
+  public displayPackages: Package[] = [];
 
   constructor(private dataService: DataService) {
   }
@@ -22,11 +25,12 @@ export class ResultsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.oldServiceId === this.service.id) {
+    if (!this.magicData || !this.magicData.service || this.oldServiceId === this.magicData.service.id) {
+      this.gotResults(this.packages);
       return;
     }
-    this.oldServiceId = this.service.id;
-    const subscription = this.dataService.getPackages(this.service.id).subscribe(packages => {
+    this.oldServiceId = this.magicData.service.id;
+    const subscription = this.dataService.getPackages(this.magicData.service.id).subscribe(packages => {
       this.gotResults(packages);
       subscription.unsubscribe();
     });
@@ -34,6 +38,41 @@ export class ResultsComponent implements OnInit, OnChanges {
 
   private gotResults(packages) {
     console.log('got packages');
+
     console.log(packages);
+    this.packages = packages;
+    console.log(this.packages.length);
+    //
+    // this.packages = [];
+    // for (let i = 0; i < 5; i++) {
+    //   this.packages.push(packages[i]);
+    // }
+    // if (this.magicData === null) {
+    //   this.displayPackages = this.packages;
+    //   return;
+    // }
+    // this.displayPackages = [];
+    // console.log(this.magicData);
+    // this.packages.forEach(pack => {
+    //   let ok = true;
+    //   // console.log(this.magicData.filters, this.magicData.filters.length);
+    //   this.magicData.filters.forEach(filter => {
+    //       var charId = filter.characteristic.id;
+    //       console.log(filter.characteristic);
+    //       // var chhh = this.getCharacteristicWithId(pack.characteristics, charId);
+    //       console.log(charId);
+    //     //   console.log(chhh);
+    //   });
+    // });
+  }
+
+  private getCharacteristicWithId(characteristics: Characteristic[], id: number) {
+    let toRet: Characteristic = null;
+    characteristics.forEach(characteristic => {
+      if (characteristic.id === id) {
+        toRet = characteristic;
+      }
+    });
+    return toRet;
   }
 }

@@ -6,4 +6,7 @@ export interface Characteristic {
   range?: any[];
   mu: string;
   values?: number[];
+  type?: string;
+  value?: string;
+  company_name?: string;
 }

@@ -81,7 +81,7 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
   }
 
   public filtersUpdated(): void {
-    console.log('filtersUpdated');
+    // console.log('filtersUpdated');
     const filters: Filter[] = [];
     this.characteristics.forEach(characteristic => {
       if (!characteristic.selected) {

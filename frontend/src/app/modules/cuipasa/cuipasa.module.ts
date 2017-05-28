@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HomePageComponent} from './pages/home-page/home-page.component';
 import {ContactPageComponent} from './pages/contact-page/contact-page.component';
 
 import {HeaderComponent} from './components/header/header.component';
@@ -13,7 +12,8 @@ import {CharacteristicsComponent} from './components/magic/magic-components/char
 import {ResultsComponent} from './components/magic/magic-components/results/results.component';
 import {ResultComponent} from './components/magic/magic-components/result/result.component';
 import {DataService} from './services/data.service';
-import { ContactformComponent } from './components/contactform/contactform.component';
+import {ContactformComponent} from './components/contactform/contactform.component';
+import {LandingPageComponent} from './pages/landing-page/landing-page.component';
 
 
 @NgModule({
@@ -21,7 +21,7 @@ import { ContactformComponent } from './components/contactform/contactform.compo
     CommonModule
   ],
   declarations: [
-    HomePageComponent,
+    LandingPageComponent,
     ContactPageComponent,
     HeaderComponent,
     MagicComponent,
@@ -31,7 +31,7 @@ import { ContactformComponent } from './components/contactform/contactform.compo
     ResultComponent,
     ContactformComponent
   ],
-  exports: [HomePageComponent],
+  exports: [LandingPageComponent],
   providers: [
     StaticInfoService,
     MockStaticInfoService,
