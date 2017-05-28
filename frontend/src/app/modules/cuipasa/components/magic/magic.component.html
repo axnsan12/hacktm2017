@@ -10,7 +10,7 @@
   <app-service-selector (selectedServiceChanged)="selectedServiceChanged($event)"></app-service-selector>
 </div>
 
-<div class="container characteristics">
+<div class="container characteristics" *ngIf="service">
   <div class="row">
     <div class="col-12">
       <p class="step">2. Filtrează după caracteristici</p>

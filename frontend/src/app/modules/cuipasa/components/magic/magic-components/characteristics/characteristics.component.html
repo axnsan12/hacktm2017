@@ -11,7 +11,7 @@
   </div>
 </div>
 <div class="row values">
-  <div *ngFor="let characteristic of characteristics;" class="col-lg-6 col-md-6 col-sm-12">
+  <div *ngFor="let characteristic of characteristics;" class="col-lg-6 col-md-6 col-sm-12" [hidden]="!characteristic.selected">
     <div *ngIf="characteristic.selected">
 
       {{characteristic.name}}<span *ngIf="characteristic.values && characteristic.values.length == 2">: de la {{characteristic.values[0]}} la {{characteristic.values[1]}} {{characteristic.mu}} </span>
