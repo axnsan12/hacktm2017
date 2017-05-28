@@ -31,4 +31,10 @@ export class StaticInfoService {
     // return this.mockStaticService.getServiceCharacteristics(serviceId);
   }
 
+  public getServicheCharacteristicsMinMax(serviceId: number) {
+    const uri = `${this.backendUri}/get/min-max?service_id=${serviceId}`;
+
+    return this.http.get(uri).map(resp => resp.json());
+  }
+
 }

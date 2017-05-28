@@ -3,7 +3,7 @@ import {Service} from '../../../../models/service';
 import {Characteristic} from '../../../../models/characteristic';
 import {StaticInfoService} from '../../../../services/static-info.service';
 import 'rxjs/add/operator/toPromise';
-import {Filter} from "../../../../models/filter";
+import {Filter} from '../../../../models/filter';
 
 declare var noUiSlider: any;
 
@@ -22,6 +22,8 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
 
   public characteristics: Characteristic[];
 
+  public minMaxs: any = [];
+
   public someRange = 2;
 
   constructor(private staticInfoService: StaticInfoService) {
@@ -36,12 +38,18 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
       this.characteristics = [];
       return;
     }
-    const subscription = this.staticInfoService.getServiceCharacteristics(this.service.id)
-      .subscribe(characteristics => {
-        // console.log(characteristics);
-        this.characteristics = characteristics;
-        characteristics.forEach(chrr => chrr.values = [0, 1000]);
-        subscription.unsubscribe();
+
+    const subs2 = this.staticInfoService.getServicheCharacteristicsMinMax(this.service.id)
+      .subscribe(minMaxs => {
+        this.minMaxs = minMaxs;
+        subs2.unsubscribe();
+        const subs1 = this.staticInfoService.getServiceCharacteristics(this.service.id)
+          .subscribe(characteristics => {
+            // console.log(characteristics);
+            this.characteristics = characteristics;
+            characteristics.forEach(chrr => chrr.values = [0, 1000]);
+            subs1.unsubscribe();
+          });
       });
   }
 

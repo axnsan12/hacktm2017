@@ -17,11 +17,11 @@ export class ResultComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.pack && this.pack.characteristics && this.pack.characteristics.length) {
-      const pck: any = this.pack;
-      pck.company_name = this.pack.characteristics[0].company_name;
-    }
-    // console.log(this.pack);
+    // if (this.pack && this.pack.characteristics && this.pack.characteristics.length) {
+    //   const pck: any = this.pack;
+    //   pck.company_name = this.pack.characteristics[0].company_name;
+    // }
+    console.log(this.pack);
   }
 
   ngOnInit() {

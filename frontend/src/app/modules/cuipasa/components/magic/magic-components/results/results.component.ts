@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {DataService} from '../../../../services/data.service';
 import {Package} from '../../../../models/package';
 import {MagicModel} from '../../../../models/magic-model';
-import {Characteristic} from "../../../../models/characteristic";
+import {Characteristic} from '../../../../models/characteristic';
 
 @Component({
   selector: 'app-results',
