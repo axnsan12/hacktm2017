@@ -52,6 +52,7 @@ $app->get('/get/packages', function (Request $request) use ($app) {
     $i = 0;
     foreach ($data as $package) {
         $sql = "        SELECT 
+                                `pc`.`id` AS `id`,
                                 `c`.`name` AS `company_name`,
                                 `pc`.`value`,
                                 `sc`.`units`,
