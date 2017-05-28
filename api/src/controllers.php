@@ -81,6 +81,7 @@ $app->get('/get/service/characteristics', function (Request $request) use ($app)
     $i = 0;
     foreach ($data as $service) {
         $sql = "        SELECT 
+                                `sc`.`id`,
                                 `sc`.`units`,
                                 `sc`.`name`,
                                 `sc`.`type`,
