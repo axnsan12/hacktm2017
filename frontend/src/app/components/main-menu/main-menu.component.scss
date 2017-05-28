@@ -45,3 +45,11 @@ ul.nav-tabs {
 .logo {
   max-height:30px;
 }
+
+.logo-link {
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content:space-around;
+}
+
