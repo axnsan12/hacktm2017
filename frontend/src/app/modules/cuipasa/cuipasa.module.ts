@@ -16,6 +16,7 @@ import {ContactformComponent} from './components/contactform/contactform.compone
 import {LandingPageComponent} from './pages/landing-page/landing-page.component';
 import {AppModule} from "../../app.module";
 import {LoginmodalComponent} from "../../components/loginmodal/loginmodal.component";
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {LoginmodalComponent} from "../../components/loginmodal/loginmodal.compon
     ResultsComponent,
     ResultComponent,
     ContactformComponent,
-    LoginmodalComponent
+    LoginmodalComponent,
+    FooterComponent
   ],
   exports: [LandingPageComponent],
   providers: [
