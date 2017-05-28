@@ -40,6 +40,7 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
       .subscribe(characteristics => {
         // console.log(characteristics);
         this.characteristics = characteristics;
+        characteristics.forEach(chrr => chrr.values = [0, 1000]);
         subscription.unsubscribe();
       });
   }

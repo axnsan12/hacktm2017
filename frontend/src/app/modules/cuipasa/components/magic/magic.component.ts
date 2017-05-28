@@ -33,6 +33,8 @@ export class MagicComponent implements OnInit {
   public filtersUpdated($event) {
     this.filters = $event;
     this.triggerDoneEvent();
+    // console.log("filters updated");
+    // console.log($event);
   }
 
   public triggerDoneEvent() {

@@ -1,0 +1,35 @@
+@import "../../../../../styles";
+
+.container-fluid.footer {
+  background-color: $cuipasa-grey;
+  height:300px;
+  color: $cuipasa-yellow;
+}
+
+.container-fluid.footer {
+  margin-top:50px;
+}
+
+.container-fluid.footer div {
+  height:90%;
+  margin-top:30px;
+}
+
+.container-fluid.footer div.first, .container-fluid.footer div.third {
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content:space-around;
+}
+
+.sep {
+  border-left:1px solid $cuipasa-yellow;
+}
+
+.logo-X-footer {
+  max-height:100px;
+}
+
+h5 {
+  color: $cuipasa-blue;
+}

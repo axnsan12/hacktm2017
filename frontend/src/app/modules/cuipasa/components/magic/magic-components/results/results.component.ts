@@ -39,31 +39,43 @@ export class ResultsComponent implements OnInit, OnChanges {
   private gotResults(packages) {
     console.log('got packages');
 
-    console.log(packages);
-    this.packages = packages;
-    console.log(this.packages.length);
+    // console.log(packages);
+    // this.packages = packages;
+    // console.log(this.packages.length);
     //
-    // this.packages = [];
-    // for (let i = 0; i < 5; i++) {
-    //   this.packages.push(packages[i]);
-    // }
-    // if (this.magicData === null) {
-    //   this.displayPackages = this.packages;
-    //   return;
-    // }
-    // this.displayPackages = [];
+    this.packages = packages;
+    if (this.magicData === null) {
+      this.displayPackages = this.packages;
+      return;
+    }
+    this.displayPackages = [];
     // console.log(this.magicData);
-    // this.packages.forEach(pack => {
-    //   let ok = true;
-    //   // console.log(this.magicData.filters, this.magicData.filters.length);
-    //   this.magicData.filters.forEach(filter => {
-    //       var charId = filter.characteristic.id;
-    //       console.log(filter.characteristic);
-    //       // var chhh = this.getCharacteristicWithId(pack.characteristics, charId);
-    //       console.log(charId);
-    //     //   console.log(chhh);
-    //   });
-    // });
+    this.packages.forEach(pack => {
+      let ok = true;
+      //   // console.log(this.magicData.filters, this.magicData.filters.length);
+      this.magicData.filters.forEach(filter => {
+        const charId = filter.characteristic.id;
+        //       console.log(filter.characteristic);
+        const chhh = this.getCharacteristicWithId(pack.characteristics, charId);
+        if (chhh == null) {
+          return;
+        }
+        // console.log(chhh.value);
+        // console.log(filter);
+        var lim: any = filter.limits;
+        if (lim) {
+          if (chhh.value < filter.limits[0] || chhh.value > filter.limits[1]) {
+            ok = false;
+          }
+        }
+        // console.log(charId);
+        // console.log(chhh);
+      });
+      // console.log(pack);
+      if (ok) {
+        this.displayPackages.push(pack);
+      }
+    });
   }
 
   private getCharacteristicWithId(characteristics: Characteristic[], id: number) {
