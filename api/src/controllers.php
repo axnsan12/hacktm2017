@@ -58,7 +58,7 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                                 `sc`.`type`,
                                 `sc`.`alias`
                                 FROM `package_characteristics` `pc`
-                                LEFT JOIN `service_characteristics` `sc`
+                                JOIN `service_characteristics` `sc`
                                     ON `sc`.`id` = `pc`.`service_characteristics_id`
                                 JOIN `company_service` `cs`
                                     ON `cs`.`services_id` = ?
