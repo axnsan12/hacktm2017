@@ -21,7 +21,7 @@ export class ResultComponent implements OnInit, OnChanges {
     //   const pck: any = this.pack;
     //   pck.company_name = this.pack.characteristics[0].company_name;
     // }
-    console.log(this.pack);
+    // console.log(this.pack);
   }
 
   ngOnInit() {

@@ -42,12 +42,17 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
     const subs2 = this.staticInfoService.getServicheCharacteristicsMinMax(this.service.id)
       .subscribe(minMaxs => {
         this.minMaxs = minMaxs;
+        console.log(minMaxs);
         subs2.unsubscribe();
         const subs1 = this.staticInfoService.getServiceCharacteristics(this.service.id)
           .subscribe(characteristics => {
             // console.log(characteristics);
             this.characteristics = characteristics;
-            characteristics.forEach(chrr => chrr.values = [0, 1000]);
+            characteristics.forEach(chrr => {
+              const mm = this.minMaxs.find(mm1 => mm1.sc_id === chrr.id);
+              console.log(mm);
+              chrr.range = [parseFloat(mm.minValue), parseFloat(mm.maxValue)];
+            });
             subs1.unsubscribe();
           });
       });
@@ -63,10 +68,15 @@ export class CharacteristicsComponent implements OnInit, OnChanges {
 
         const sliderElement: any = document.getElementsByClassName(className)[0];
 
+        const range = characteristic.range || [0, 1000];
+        if (range[0] === range[1]) {
+          range[1]++;
+        }
+        const step = Math.round((characteristic.range[1] - characteristic.range[0]) / 100);
         const sliderOptions = {
-          start: characteristic.range || [0, 1000],
+          start: range,
           connect: true,
-          step: 10,
+          step: step,
           range: {
             'min': characteristic.range ? characteristic.range[0] : 0,
             'max': characteristic.range ? characteristic.range[1] : 1000
