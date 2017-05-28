@@ -37,12 +37,15 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                     `s`.`id` AS `service_id`,
                     `p`.`id` AS `id`,
                     `p`.`name` AS `package_name`,
-                    `p`.`price`
+                    `p`.`price`,
+                    `c`.`name` AS `company_name`
                     FROM `services` `s`
                     JOIN `company_service` `cs`
                         ON `cs`.`services_id` = ?
                     JOIN `packages` `p`
                         ON `p`.`company_service_id` = `cs`.`id`
+                    JOIN `companies` `c`
+                        ON `c`.`id` = `cs`.`companies_id`
                         GROUP BY `p`.`id`";
 
     $serviceId = $request->query->get('service_id');
@@ -51,9 +54,8 @@ $app->get('/get/packages', function (Request $request) use ($app) {
     $dataOutput = [];
     $i = 0;
     foreach ($data as $package) {
-        $sql = "        SELECT 
+        $sql = "        SELECT DISTINCT
                                 `sc`.`id` AS `id`,
-                                `c`.`name` AS `company_name`,
                                 `pc`.`value`,
                                 `sc`.`units`,
                                 `sc`.`name`,
@@ -64,8 +66,6 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                                     ON `sc`.`id` = `pc`.`service_characteristics_id`
                                 JOIN `company_service` `cs`
                                     ON `cs`.`services_id` = ?
-                                JOIN `companies` `c`
-                                    ON `c`.`id` = `cs`.`id`
                                 WHERE `pc`.`packages_id` = ?";
         array_push($dataOutput, $package);
         $dataChar = $app['db']->fetchAll($sql, array($package['service_id'], $package['id']));
@@ -120,6 +120,13 @@ $app->get('/get/min-max', function (Request $request) use ($app) {
 
     $serviceId = $request->query->get('service_id');
     $data = $app['db']->fetchAll($sql, array($serviceId));
+
+    $i = 0;
+    foreach ($data as $valueData) {
+        $data[$i]['minValue'] = ($valueData['minValue'] == "nelimitat") ? 99999 : $valueData['minValue'];
+        $data[$i]['maxValue'] = ($valueData['maxValue'] == "nelimitat") ? 99999 : $valueData['maxValue'];
+        $i++;
+    }
 
     return $app->json($data);
 })->bind('getMinMax');
