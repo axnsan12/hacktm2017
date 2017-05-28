@@ -42,7 +42,8 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                     JOIN `company_service` `cs`
                         ON `cs`.`services_id` = ?
                     JOIN `packages` `p`
-                        ON `p`.`company_service_id` = `cs`.`id`";
+                        ON `p`.`company_service_id` = `cs`.`id`
+                        GROUP BY `p`.`id`";
 
     $serviceId = $request->query->get('service_id');
     $data = $app['db']->fetchAll($sql, array($serviceId));
