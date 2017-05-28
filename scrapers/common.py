@@ -82,15 +82,17 @@ def url_last_path(url: str, root_url: str) -> str:
     return last
 
 
-def extract_features(features_raw: List[Tuple[str, str]], feature_kw: Dict[Tuple[str, str], str], name: str = None):
+def extract_features(features_raw: List[Tuple[str, str]], feature_kw: Dict[str, str], name: str = None):
     features = {}
     for feature_text, feature_value in features_raw:
         feature_words = re.sub('[^a-z]', '', feature_text.lower())
         for alias, kws in feature_kw.items():
             if all(kw in feature_words for kw in kws.split(' ')):
-                features[alias] = format_units(feature_value)
+                for a in alias.split(' '):
+                    if a not in features:
+                        features[a] = format_units(feature_value)
 
-    if not all(alias in features for alias in feature_kw.keys()):
+    if not all(alias in features for alias in feature_kw.keys() if ' ' not in alias):
         missing = set(feature_kw.keys()) - set(features.keys())
         # raise ScraperError(f"{abon_name} missing values for [{', '.join(missing)}]")
         print(f"{name} missing values for [{', '.join(missing)}]")
