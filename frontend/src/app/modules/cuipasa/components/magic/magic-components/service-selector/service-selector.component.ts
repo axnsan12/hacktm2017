@@ -21,13 +21,11 @@ export class ServiceSelectorComponent implements OnInit {
   }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.serviceClicked(this.services[0]);
-    }, 500);
   }
 
   private gotServices(services: Service[]) {
     this.services = services;
+    this.serviceClicked(this.services[0]);
   }
 
   public serviceClicked(service: Service) {
@@ -39,6 +37,10 @@ export class ServiceSelectorComponent implements OnInit {
   }
 
   public isServiceSelected(service: Service): boolean {
+    if (service == null) {
+      console.log('fucking null');
+      return false;
+    }
     return this.selectedService !== null && service.id === this.selectedService.id;
   }
 }
