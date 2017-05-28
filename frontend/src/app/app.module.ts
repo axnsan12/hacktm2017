@@ -7,11 +7,13 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {MainMenuComponent} from './components/main-menu/main-menu.component';
 import {ModalModule} from 'ngx-bootstrap';
+import { LoginmodalComponent } from './components/loginmodal/loginmodal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainMenuComponent,
+
 
   ],
   imports: [

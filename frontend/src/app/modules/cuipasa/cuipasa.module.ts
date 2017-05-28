@@ -14,6 +14,8 @@ import {ResultComponent} from './components/magic/magic-components/result/result
 import {DataService} from './services/data.service';
 import {ContactformComponent} from './components/contactform/contactform.component';
 import {LandingPageComponent} from './pages/landing-page/landing-page.component';
+import {AppModule} from "../../app.module";
+import {LoginmodalComponent} from "../../components/loginmodal/loginmodal.component";
 
 
 @NgModule({
@@ -29,7 +31,8 @@ import {LandingPageComponent} from './pages/landing-page/landing-page.component'
     CharacteristicsComponent,
     ResultsComponent,
     ResultComponent,
-    ContactformComponent
+    ContactformComponent,
+    LoginmodalComponent
   ],
   exports: [LandingPageComponent],
   providers: [
