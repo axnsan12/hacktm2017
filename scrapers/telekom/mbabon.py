@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-import os,sys,inspect
+import os, sys, inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir) 
+sys.path.insert(0, parentdir)
 
 import json
 from collections import OrderedDict
 import bs4
-from common import scraper_main, get_json, get_soup, ScraperError
+from common import format_units, scraper_main, get_json, get_soup, ScraperError
 import re
 from urllib.parse import urljoin, urlparse
-from telekom import _format_units
 
 
 def _extract_p_data(elem) -> str:
@@ -27,8 +26,8 @@ def telekom_mobil_abonamente(scraper_url: str):
     soup = bs4.BeautifulSoup(products_html, 'html5lib')
 
     feature_kw = OrderedDict([
-        ('mobil_min_nat', 'min internationale'),
-        ('mobil_min_internat', 'min nationale'),
+        ('mobil_min_internat', 'min internationale'),
+        ('mobil_min_nat', 'min nationale'),
         ('mobil_date', 'trafic date'),
         ('mobil_sms_nat', 'sms nationale')
     ])
@@ -54,7 +53,7 @@ def telekom_mobil_abonamente(scraper_url: str):
             feature_words = re.sub('[^a-z]', '', feature_name.lower())
             for alias, kws in feature_kw.items():
                 if all(kw in feature_words for kw in kws.split(' ')):
-                    characteristics[alias] = _format_units(feature_value)
+                    characteristics[alias] = format_units(feature_value)
                     break
 
         if not all(alias in characteristics for alias in feature_kw.keys()):
@@ -64,7 +63,7 @@ def telekom_mobil_abonamente(scraper_url: str):
 
         package = {
             'name': abon_name.strip(),
-            'price': _format_units(abon_price),
+            'price': format_units(abon_price),
             'scraper_id_hint': abon_id.strip(),
             'characteristics': characteristics
         }

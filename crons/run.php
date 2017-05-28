@@ -24,75 +24,70 @@ try {
         throw new Exception("Invalid arguments");
     }
 
+    $previousCompanyId = 0;
 
-        $outputFile = @file_get_contents($argv[2] . ".json");
+    $scrapersRepo = $em->getRepository("Models\Scrapers");
+    $scrapers = $scrapersRepo->findAll();
+    /** @var Scrapers[] $scrapers */
 
-        file_put_contents($argv[1] . ".json", $outputFile);
-        file_put_contents("logs/" . $argv[1] . date("d-m-y-h-i-s") . ".json", $outputFile);
+    $outputFilename = $argv[2] . ".json";
+    foreach ($scrapers as $scraper) {
+        $scriptName = $scraper->getScriptName();
+        $scriptName = "../scrapers/{$scriptName}";
+        echo "Running scraper {$scraper->getName()} / {$scriptName} \"{$scraper->getUrl()}\" $outputFilename" . PHP_EOL;
 
-        $inputData = json_decode($outputFile, true);
+        /** @var Models\CompanyService $companyService */
+        $companyService = $scraper->getCompanyService();
 
-        if (empty($inputData) || !count($inputData) || !is_array($inputData)) {
-            throw new Exception("Invalid json");
+        if (!file_exists($scriptName)) {
+            throw new Exception("script_file not found");
         }
 
-        $previousCompanyId = 0;
-        foreach ($inputData['packages'] as $value) {
-            if (!isset($value['name']) || !isset($value['price'])) {
-                echo "[SKIPPED] No name or price defined for this package" . PHP_EOL;
-                continue;
-            }
-
-            $scrapersRepo = $em->getRepository("Models\Scrapers");
-            $scrapers = $scrapersRepo->findAll();
-            /** @var Scrapers[] $scrapers */
-
-            foreach ($scrapers as $scraper) {
-                $scriptName = $scraper->getScriptName();
-
-                /** @var Models\CompanyService $companyService */
-                $companyService = $scraper->getCompanyService();
-
-                if ($previousCompanyId != $companyService->getId()) {
-                    $sql = 'DELETE FROM Models\Packages p WHERE p.companyService = ?1';
-                    $query = $em->createQuery($sql);
-                    $query->setParameter(1, $companyService);
-
-                    $res = $query->execute();
-
-                    $em->persist($companyService);
-                    $em->flush();
-                    $previousCompanyId = $companyService->getId();
-                }
-
-                $newPackage = new Packages($value['name'], $value['price'], $companyService, $value['scraper_id_hint']);
-                foreach ($value['characteristics'] as $alias => $val) {
-                    $newPackage->setCharacteristic($alias, $val, 'n-am');
-                }
-                $em->persist($newPackage);
-                $em->flush();
-
-                //                if (!file_exists($scriptName)) {
-                //                    throw new Exception("script_file not found");
-                //                }
-
-                if (!file_exists($argv[2] . ".json")) {
-                    echo "[WARNING] No input file found, created one ({$argv[2]}.json)" . PHP_EOL;
-                    $inputFileExists = false;
-                    file_put_contents($argv[2], '');
-                }
-
-                if (!file_exists($argv[2] . ".json")) {
-                    throw new Exception("No output");
-                }
-
-                //                if (!system("{$scriptName} {$data['url']} {$argv[3]}", $out)) {
-                //                    throw new Exception("Execution failed");
-                //                }
-            }
+        if (!file_exists($outputFilename)) {
+            echo "[WARNING] No input file found, created one ({$outputFilename})" . PHP_EOL;
+            $inputFileExists = false;
+            file_put_contents($outputFilename, '');
         }
+
+        if (system("\"{$scriptName}\" \"{$scraper->getUrl()}\" {$outputFilename}", $out) === FALSE) {
+            echo $out;
+            throw new Exception("Execution failed ");
+        }
+
+        if (!file_exists($outputFilename)) {
+            throw new Exception("No output");
+        }
+
+        $outputFileContents = @file_get_contents($outputFilename);
+        $newPackages = json_decode($outputFileContents, true)['packages'];
+
+        $sql = 'DELETE FROM Models\Packages p WHERE p.companyService = ?1';
+        $query = $em->createQuery($sql);
+        $query->setParameter(1, $companyService);
+
+        $res = $query->execute();
+        $em->persist($companyService);
+
+        foreach ($newPackages as $packageJson) {
+            $em->flush();
+
+            $name = $packageJson['name'];
+            $price = $packageJson['price'][0];
+            $hint = isset($packageJson['scraper_id_hint']) ? $packageJson['scraper_id_hint'] : null;
+            $newPackage = new Packages($name, $price, $companyService, $hint);
+            foreach ($packageJson['characteristics'] as $alias => $val) {
+                $value = is_array($val) ? $val[0] : $val;
+                $units = isset($val[1]) ? $val[1] : '';
+                echo "characteristic " . $alias . " " . $value . PHP_EOL;
+                $newPackage->setCharacteristic($alias, $value, $units);
+            }
+            $em->persist($newPackage);
+            $em->flush();
+        }
+    }
 } catch (Exception $e) {
     $error = $e->getMessage();
+
     if ($error == "Invalid arguments") {
         echo '[INFO] Please run: run.php [input_packages_json] [output_packages_json]' . PHP_EOL;
     } else if ($error == "Execution failed") {

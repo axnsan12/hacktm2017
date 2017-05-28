@@ -13,6 +13,7 @@ import {CharacteristicsComponent} from './components/magic/magic-components/char
 import {ResultsComponent} from './components/magic/magic-components/results/results.component';
 import {ResultComponent} from './components/magic/magic-components/result/result.component';
 import {DataService} from './services/data.service';
+import { ContactformComponent } from './components/contactform/contactform.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import {DataService} from './services/data.service';
     ServiceSelectorComponent,
     CharacteristicsComponent,
     ResultsComponent,
-    ResultComponent
+    ResultComponent,
+    ContactformComponent
   ],
   exports: [HomePageComponent],
   providers: [
