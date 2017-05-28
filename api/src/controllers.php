@@ -34,6 +34,7 @@ $app->get('/get/companies', function (Request $request) use ($app) {
 
 $app->get('/get/packages', function (Request $request) use ($app) {
     $sql = "SELECT 
+                    `s`.`id` AS `service_id`,
                     `p`.`id` AS `id`,
                     `p`.`name` AS `package_name`,
                     `p`.`price`
@@ -60,12 +61,12 @@ $app->get('/get/packages', function (Request $request) use ($app) {
                                 LEFT JOIN `service_characteristics` `sc`
                                     ON `sc`.`id` = `pc`.`service_characteristics_id`
                                 JOIN `company_service` `cs`
-                                    ON `cs`.`services_id` = `s`.`id`
+                                    ON `cs`.`services_id` = ?
                                 JOIN `companies` `c`
                                     ON `c`.`id` = `cs`.`id`
                                 WHERE `pc`.`packages_id` = ?";
         array_push($dataOutput, $package);
-        $dataChar = $app['db']->fetchAll($sql, array($package['id']));
+        $dataChar = $app['db']->fetchAll($sql, array($package['service_id'], $package['id']));
         $dataOutput[$i++]['characteristics'] = count($dataChar) ? $dataChar : [];
     }
 
