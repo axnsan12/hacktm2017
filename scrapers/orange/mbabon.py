@@ -36,7 +36,7 @@ def orange_abon(scraper_url: str):
             'characteristics': characteristics
         })
 
-    return json.dumps(packages)
+    return json.dumps({"packages": packages})
 
 
 if __name__ == '__main__':

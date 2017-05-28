@@ -7,7 +7,7 @@ sys.path.insert(0, parentdir)
 import json
 from collections import OrderedDict
 import bs4
-from common import scraper_main, get_json, get_soup, ScraperError
+from common import format_units, scraper_main, get_json, get_soup, ScraperError
 import re
 from urllib.parse import urljoin, urlparse
 
