@@ -38,7 +38,7 @@ export class ResultsComponent implements OnInit, OnChanges {
 
   private gotResults(packages) {
     console.log('got packages');
-
+    this.displayPackages = [];
     // console.log(packages);
     // this.packages = packages;
     // console.log(this.packages.length);
@@ -77,6 +77,7 @@ export class ResultsComponent implements OnInit, OnChanges {
       }
     });
   }
+
 
   private getCharacteristicWithId(characteristics: Characteristic[], id: number) {
     let toRet: Characteristic = null;

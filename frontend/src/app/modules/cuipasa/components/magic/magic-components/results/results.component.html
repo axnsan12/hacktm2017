@@ -1,12 +1,13 @@
+
 <div class="container">
   <div class="row">
     <div class="col-12 results-table">
       <div class="row result-offer" *ngIf="displayPackages && displayPackages.length">
         <!--dsfsdfsdf-->
         <!--<span *ngIf="packages">-->
-          <!--{{packages | json}}-->
+        <!--{{packages | json}}-->
         <!--</span>-->
-       <app-result *ngFor="let pack of displayPackages" [pack]="pack"></app-result>
+        <app-result *ngFor="let pack of displayPackages" [pack]="pack"></app-result>
 
       </div>
     </div>

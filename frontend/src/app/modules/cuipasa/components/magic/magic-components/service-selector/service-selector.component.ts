@@ -25,7 +25,7 @@ export class ServiceSelectorComponent implements OnInit {
 
   private gotServices(services: Service[]) {
     this.services = services;
-    // this.serviceClicked(this.services[0]);
+    this.serviceClicked(this.services[0]);
   }
 
   public serviceClicked(service: Service) {
