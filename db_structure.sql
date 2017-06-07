@@ -272,3 +272,15 @@ INSERT INTO `hacktm`.`service_characteristics` (`id`, `name`, `type`, `services_
 
 COMMIT;
 
+CREATE TABLE IF NOT EXISTS `hacktm`.`users` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(250) NULL,
+  `password` VARCHAR(250) NULL,
+  `email` VARCHAR(45) NULL,
+  `date_created` DATETIME NULL DEFAULT NOW(),
+  `date_updated` DATETIME NULL DEFAULT NOW(),
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC))
+  ENGINE = InnoDB
