@@ -283,4 +283,15 @@ CREATE TABLE IF NOT EXISTS `hacktm`.`users` (
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
-  ENGINE = InnoDB
+  ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `hacktm`.`auth_keys` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` VARCHAR(45) NOT NULL,
+  `key` VARCHAR(45) NOT NULL,
+  `date_created` DATETIME NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC),
+  UNIQUE INDEX `key_UNIQUE` (`key` ASC))
+  ENGINE = InnoDB;
