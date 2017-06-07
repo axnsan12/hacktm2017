@@ -139,20 +139,66 @@ $app->get('/user/auth', function (Request $request) use ($app) {
     // if user and password given -> secret key
     if (!empty($username) && !empty($password)) {
         $sql = "
-            SELECT COUNT(*) AS `result_nr`
-            FROM `users`
-            WHERE `username` = ?
-              AND `password` = PASSWORD(?)
+            SELECT 
+            COUNT(*) AS `result_nr`,
+            `u`.`id` AS `user_id`,
+            `ak`.`key`
+            FROM `users` `u`
+            LEFT JOIN `auth_keys` `ak`
+              ON `ak`.`user_id` = `u`.`id`
+            WHERE `u`.`username` = ?
+              AND `u`.`password` = PASSWORD(?)
         ";
 
-        $data = $app['db']->fetchAssoc($sql, $username, $password);
+        $dataQuery = $app['db']->fetchAssoc($sql, array($username, $password));
 
-        if ($data['result_nr'] == 1) {
+        if ($dataQuery['result_nr'] == 1) {
             $data = [
                         'status' => '200',
                         'message' => '',
                     ];
 
+            if (!empty($dataQuery['key'])) {
+                $sql = "
+                    DELETE
+                    FROM `auth_keys`
+                    WHERE `user_id` = ?
+                ";
+
+                $app['db']->query($sql, array($dataQuery['user_id']));
+
+                $sql = "
+                    INSERT INTO `auth_keys` (`user_id`, `key`, `date_created`)
+                      VALUES (?, ?, NOW())
+                ";
+
+                $authKey = md5(rand(1, 9999) . rand(4, 500) . rand(1, 3012) . date("d-m-Y H:i:s") . $dataQuery['user_id']);
+                if (!$app['db']->query($sql, array($dataQuery['user_id'], $authKey))) {
+                    $data = [
+                        'status' => '500',
+                        'message' => 'Something went wrong logging in',
+                    ];
+                } else {
+                    $data = [
+                        'status' => 200,
+                        'message' => 'An authentication key has been generated',
+                        'key' => $authKey,
+                    ];
+                }
+            } else {
+                $sql = "
+                    INSERT INTO `auth_keys` (`user_id`, `key`, `date_created`)
+                      VALUES (?, ?, NOW())
+                ";
+
+                $authKey = md5(rand(1, 9999) . rand(4, 500) . rand(1, 3012) . date("d-m-Y H:i:s") . $dataQuery['user_id']);
+                if (!$app['db']->query($sql, array($dataQuery['user_id'], $authKey))) {
+                    $data = [
+                        'status' => '500',
+                        'message' => 'Something went wrong logging in',
+                    ];
+                }
+            }
         } else {
             $data = [
                         'status' => '400',
@@ -160,7 +206,37 @@ $app->get('/user/auth', function (Request $request) use ($app) {
                     ];
         }
     } else if (!empty($secretKey)) {
+        $sql = "
+            SELECT 
+              COUNT(*) AS `result_nr`,
+              `u`.`username` AS `username`,
+              `u`.`email` AS `email`,
+              `u`.`date_created` AS `date_created`
+            FROM `auth_keys` `ak`
+            JOIN `users` `u`
+              ON `u`.`id` = `ak`.`id`
+            WHERE `ak`.`key` = ?
+        ";
 
+        $dataQuery = $app['db']->fetchAssoc($sql, array($secretKey));
+
+        if ($dataQuery['result_nr'] == 1) {
+            $data = [
+                'status' => '200',
+                'message' => '',
+                'userData' => [
+                                'username' => $dataQuery['username'],
+                                'email' => $dataQuery['email'],
+                                'date_crated' => $dataQuery['date_created'],
+                              ]
+            ];
+            // TODO: Logged in functionalities
+        } else {
+            $data = [
+                'status' => '400',
+                'message' => 'Invalid auth key provided',
+            ];
+        }
     } else {
         $data = [
                     'status' => '400',
