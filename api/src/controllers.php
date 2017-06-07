@@ -131,6 +131,46 @@ $app->get('/get/min-max', function (Request $request) use ($app) {
     return $app->json($data);
 })->bind('getMinMax');
 
+$app->get('/user/auth', function (Request $request) use ($app) {
+    $username = $request->query->get('username');
+    $password = $request->query->get('password');
+    $secretKey = $request->query->get('secretKey');
+
+    // if user and password given -> secret key
+    if (!empty($username) && !empty($password)) {
+        $sql = "
+            SELECT COUNT(*) AS `result_nr`
+            FROM `users`
+            WHERE `username` = ?
+              AND `password` = PASSWORD(?)
+        ";
+
+        $data = $app['db']->fetchAssoc($sql, $username, $password);
+
+        if ($data['result_nr'] == 1) {
+            $data = [
+                        'status' => '200',
+                        'message' => '',
+                    ];
+
+        } else {
+            $data = [
+                        'status' => '400',
+                        'message' => 'Wrong credentials',
+                    ];
+        }
+    } else if (!empty($secretKey)) {
+
+    } else {
+        $data = [
+                    'status' => '400',
+                    'message' => 'Wrong parameters',
+                ];
+    }
+
+    return $app->json($data);
+})->bind('doLogin');
+
 $app->after(function (Request $request, Response $response) {
     $response->headers->set('Access-Control-Allow-Origin', '*');
 });
